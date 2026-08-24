@@ -60,7 +60,7 @@ class ConfigDictConverter:
                                  'clip_coef', 'clip_vloss', 'ent_coef', 'vf_coef', 'max_grad_norm', 'target_kl',
                                  'weight_decay', 'adam_eps', 'adam_beta2', 'tuned_adam',
                                  'layer_norm', 'layer_norm_no_params',
-                                 'parseval_reg', 'parseval_num_groups',
+                                 'parseval_reg', 'parseval_norm', 'parseval_num_groups', 'rpo_alpha', 'regen', 'regen_wasserstein', 'input_scale', 'learnable_input_scale', 'add_diag_layer', 'network_type', 'lie_group', 'pion', 'pion_block_size', 'pion_multiplicative', 'oft', 'poet', 'oet_num_blocks', 'poet_exact_cayley',
                                  'tsallis_entropy', 'l2_init', 'group_sort', 'weight_init', 'init_gain',
                                  'perturb', 'perturb_dist',
                                  'net_width', 'net_activation']
@@ -174,10 +174,12 @@ class ConfigDictConverter:
             env = config_dict['env'].lower()
 
             if env[0:19] == 'metaworld_sequence_':  # e.g. 'metaworld_sequence_reach'
-                if env[19:22] == 'set': # e.g. "metaworld_sequence_set1"
+                if env[19:] == 'shuffle':  # shuffled set0 for task-order robustness
+                    self.env_dict['env_sequence'] = 'shuffle'
+                elif env[19:22] == 'set': # e.g. "metaworld_sequence_set1"
                     self.env_dict['env_sequence'] = env[19:]  # e.g. "set1"
                 else:
-                    self.env_dict['base_task_name'] = f'{env[19:]}-v2'
+                    self.env_dict['base_task_name'] = f'{env[19:]}-v3'
 
             self.env_dict = {k: v for k, v in self.env_dict.items() if k in env_key_lst}
             self.env_dict['env_type'] = 'rl'
@@ -291,6 +293,15 @@ def main():
     parser.add_argument('--input_scale', type=float, default=1, help='Input scaling factor')
     parser.add_argument('--learnable_input_scale', type=bool, default=False, help='Make input scale learnable')
     parser.add_argument('--add_diag_layer', type=bool, default=False, help='Add diagonal layers to the network')
+    parser.add_argument('--lie_group', type=bool, default=False, help='Use Lie-group (Stiefel) Riemannian optimization for hidden weights')
+    parser.add_argument('--pion', type=bool, default=False, help='Use Pion spectrum-preserving optimizer for 2D weights')
+    parser.add_argument('--pion_block_size', type=int, default=None, help='Block-diagonal size for Pion in-side update (None = full)')
+    parser.add_argument('--pion_multiplicative', type=bool, default=False, help='Use multiplicative Pion variant (paper Algorithm 1)')
+    parser.add_argument('--oft', type=bool, default=False, help='Use OFT (Orthogonal Finetuning, W=W0@R)')
+    parser.add_argument('--poet', type=bool, default=False, help='Use POET (W=P@W0@R)')
+    parser.add_argument('--oet_num_blocks', type=int, default=1, help='Block-diagonal blocks for OFT/POET input-side R')
+    parser.add_argument('--poet_exact_cayley', type=bool, default=False, help='POET: use exact-inverse Cayley instead of the 4th-order Neumann truncation')
+    parser.add_argument('--save_suffix', type=str, default='', help='Extra suffix on save_tag, to keep sweep configs from overwriting each other')
 
     # Other loss of plasticity methods
     parser.add_argument('--layer_norm', type=bool, default=False, help='Use layer normalization')
@@ -305,7 +316,7 @@ def main():
     parser.add_argument('--regen_wasserstein', type=bool, default=False, help='Use Wasserstein loss for regeneration')
 
     # Network architecture arguments
-    parser.add_argument('--weight_init', type=str, default='orthogonal', help='Weight initialization method')
+    parser.add_argument('--weight_init', type=str, default=None, help='Weight initialization method (unset -> per-algorithm default)')
     parser.add_argument('--net_width', type=int, default=64, help='Width of the network layers')
     parser.add_argument('--net_activation', type=str, default='tanh', help='Activation function for the network')
     parser.add_argument('--init_gain', type=float, default=None, help='Gain for weight initialization (if applicable)')
@@ -319,12 +330,15 @@ def main():
     args = parser.parse_args()
     
     # Set different defaults depending on the env and algorithm
-    if "gridworld" in args.env: 
-        args.change_freq = 40000
-        args.num_steps = 800000
+    if "gridworld" in args.env:
+        if args.change_freq == 1e6:  # argparse default -> not user-specified; CLI can override for longer runs
+            args.change_freq = 40000
+        if args.num_steps == 10000:  # 10000 is the argparse default -> not user-specified, use paper default
+            args.num_steps = 800000
         args.save_freq = 5000
 
-        args.learning_rate = 0.00025  
+        if args.learning_rate == 0.0003:  # argparse default -> not user-specified
+            args.learning_rate = 0.00025
         args.rollout_num_steps = 128  
         args.num_minibatches = 4  
         args.update_epochs = 4 
@@ -336,6 +350,31 @@ def main():
             ...
         elif args.algorithm == 'parseval':
             args.parseval_reg = 0.001
+
+        elif args.algorithm == 'lie_group':  # Riemannian optimization on the Stiefel manifold (hard orthogonality)
+            args.lie_group = True
+            args.add_diag_layer = True  # compensate the reduced capacity (same as Parseval + diag)
+
+        elif args.algorithm == 'pion':  # Pion spectrum-preserving optimizer
+            args.pion = True
+            if args.weight_init is None:  # not user-specified; use Gaussian
+                args.weight_init = 'xavier'  # Gaussian init -> spectrum has shape, preserving it is NOT hard orthogonality
+
+        elif args.algorithm == 'pion_mult':  # Pion multiplicative variant (paper Algorithm 1)
+            args.pion = True
+            args.pion_multiplicative = True
+            if args.weight_init is None:  # not user-specified; use Gaussian
+                args.weight_init = 'xavier'
+
+        elif args.algorithm == 'oft':  # Orthogonal Finetuning (W = W0 @ R)
+            args.oft = True
+
+        elif args.algorithm == 'poet':  # Principled Orthogonal Finetuning (W = P @ W0 @ R)
+            args.poet = True
+
+        elif args.algorithm == 'poet_exact':  # POET ablation: exact-inverse Cayley instead of Neumann truncation
+            args.poet = True
+            args.poet_exact_cayley = True
 
         elif args.algorithm == 'snp':  # shrink and perturb
             args.perturb = 0.001
@@ -351,8 +390,9 @@ def main():
             args.regen = 0.001
             args.regen_wasserstein = True
 
-    elif "lunarlander" in args.env: 
-        args.num_steps = 1e7
+    elif "lunarlander" in args.env:
+        if args.num_steps == 10000:  # 10000 is the argparse default -> not user-specified, use paper default
+            args.num_steps = 1e7
         args.change_freq = 500000
 
         args.rollout_num_steps = 128  
@@ -381,8 +421,9 @@ def main():
             args.regen = 0.001
             args.regen_wasserstein = True
 
-    elif "quadruped" in args.env: 
-        args.num_steps = 12000000
+    elif "quadruped" in args.env:
+        if args.num_steps == 10000:
+            args.num_steps = 12000000
         args.change_freq = 1500000
 
         args.entropy_coef = 0.0001
@@ -408,8 +449,9 @@ def main():
             args.regen_wasserstein = True
 
 
-    elif "metaworld" in args.env: 
-        args.num_steps = 1e7
+    elif "metaworld" in args.env:
+        if args.num_steps == 10000:  # 10000 is the argparse default -> not user-specified, use paper default
+            args.num_steps = 1e7
         args.change_freq = 1e6
 
         if args.algorithm == 'base':
@@ -418,16 +460,37 @@ def main():
             args.parseval_reg = 0.001
             args.add_diag_layer = True
 
+        elif args.algorithm == 'pion':  # Pion spectrum-preserving optimizer
+            args.pion = True
+            if args.weight_init is None:  # not user-specified; use Gaussian
+                args.weight_init = 'xavier'
+
+        elif args.algorithm == 'pion_mult':  # Pion multiplicative variant (paper Algorithm 1)
+            args.pion = True
+            args.pion_multiplicative = True
+            if args.weight_init is None:  # not user-specified; use Gaussian
+                args.weight_init = 'xavier'
+
+        elif args.algorithm == 'oft':  # Orthogonal Finetuning (W = W0 @ R)
+            args.oft = True
+
+        elif args.algorithm == 'poet':  # Principled Orthogonal Finetuning (W = P @ W0 @ R)
+            args.poet = True
+
+        elif args.algorithm == 'poet_exact':  # POET ablation: exact-inverse Cayley instead of Neumann truncation
+            args.poet = True
+            args.poet_exact_cayley = True
+
         elif args.algorithm == 'snp':  # shrink and perturb
             args.perturb = 0.001
             args.weight_decay = 0.001
 
         elif args.algorithm == 'layer_norm':  # layer normalization
             args.layer_norm = True
-            
+
         elif args.algorithm == 'regen':  # regenerative regularization (l2-init)
             args.regen = 0.01
-            
+
         elif args.algorithm == 'w-regen':  # wasserstein version
             args.regen = 0.001
             args.regen_wasserstein = True
@@ -435,6 +498,11 @@ def main():
     else:
         raise AssertionError("Invalid env", args.env)
 
+    # Resolve weight_init default AFTER the per-algorithm branches. The argparse
+    # default is None so that pion can distinguish "explicitly passed orthogonal"
+    # from "not specified". Everything else keeps its historical orthogonal default.
+    if args.weight_init is None:
+        args.weight_init = 'orthogonal' if args.algorithm not in ('pion', 'pion_mult') else 'xavier'
 
     if args.test_run:
         args.num_steps = 10000
@@ -442,6 +510,12 @@ def main():
 
     # initialize config
     save_tag = f"{args.env}_{args.algorithm}_{args.repeat_idx}"
+    if getattr(args, 'parseval_norm', False):
+        save_tag += "_angles"
+    elif getattr(args, 'parseval_num_groups', 1) > 1:
+        save_tag += f"_groups{args.parseval_num_groups}"
+    if getattr(args, 'save_suffix', ''):
+        save_tag += f"_{args.save_suffix}"
     config_obj = ConfigDictConverter(vars(args))
     agent_parameters = config_obj.agent_dict
     env_parameters = config_obj.env_dict
@@ -584,6 +658,10 @@ def main():
 
             print(f"{i_step} eval return {round(save_metrics['mean_eval_return'],3)} +/- {round(save_metrics['std_eval_return']/np.sqrt(num_eval_runs),3)}")
             metric_logger.save_metrics('eval', **save_metrics)
+
+        # periodic checkpoint so a long run can be recovered if interrupted
+        if (i_step + 1) % 50000 == 0:
+            metric_logger.save_to_file(save_path, save_tag=save_tag)
 
         if metric_logger.save_model_freq > 0:  # there's an option not to save models
             if (i_step+1) % metric_logger.save_model_freq == 0:

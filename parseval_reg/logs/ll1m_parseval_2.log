@@ -1,0 +1,116 @@
+D:\anaconda\envs\parseval-carl\lib\site-packages\carl\envs\__init__.py:42: UserWarning: Module brax not found. If you want to use these environments, please follow the installation guide.
+  warnings.warn(
+D:\anaconda\envs\parseval-carl\lib\site-packages\carl\envs\__init__.py:42: UserWarning: Module py4j not found. If you want to use these environments, please follow the installation guide.
+  warnings.warn(
+D:\anaconda\envs\parseval-carl\lib\site-packages\carl\envs\__init__.py:42: UserWarning: Module distance not found. If you want to use these environments, please follow the installation guide.
+  warnings.warn(
+D:\anaconda\envs\parseval-carl\lib\site-packages\carl\__init__.py:55: UserWarning: Module py4j not found. If you want to use these environments,
+                    please follow the installation guide.
+  warnings.warn(
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+D:\anaconda\envs\parseval-carl\lib\site-packages\gymnasium\core.py:311: UserWarning: [33mWARN: env.num_envs to get variables from other wrappers is deprecated and will be removed in v1.0, to get this variable you can do `env.unwrapped.num_envs` for environment variables or `env.get_wrapper_attr('num_envs')` that will search the reminding wrappers.[0m
+  logger.warn(
+D:\anaconda\envs\parseval-carl\lib\site-packages\gymnasium\core.py:311: UserWarning: [33mWARN: env.is_vector_env to get variables from other wrappers is deprecated and will be removed in v1.0, to get this variable you can do `env.unwrapped.is_vector_env` for environment variables or `env.get_wrapper_attr('is_vector_env')` that will search the reminding wrappers.[0m
+  logger.warn(
+D:\anaconda\envs\parseval-carl\lib\site-packages\gymnasium\core.py:311: UserWarning: [33mWARN: env.num_envs to get variables from other wrappers is deprecated and will be removed in v1.0, to get this variable you can do `env.unwrapped.num_envs` for environment variables or `env.get_wrapper_attr('num_envs')` that will search the reminding wrappers.[0m
+  logger.warn(
+D:\anaconda\envs\parseval-carl\lib\site-packages\gymnasium\core.py:311: UserWarning: [33mWARN: env.is_vector_env to get variables from other wrappers is deprecated and will be removed in v1.0, to get this variable you can do `env.unwrapped.is_vector_env` for environment variables or `env.get_wrapper_attr('is_vector_env')` that will search the reminding wrappers.[0m
+  logger.warn(
+agent_dict keys dict_keys(['base_algorithm', 'learning_rate', 'num_envs', 'rollout_num_steps', 'gamma', 'gae_lambda', 'num_minibatches', 'update_epochs', 'minibatch_size', 'norm_adv', 'clip_coef', 'clip_vloss', 'ent_coef', 'vf_coef', 'max_grad_norm', 'parseval_reg', 'layer_norm', 'layer_norm_no_params', 'weight_decay', 'tuned_adam', 'perturb', 'perturb_dist', 'weight_init', 'net_width', 'net_activation', 'init_gain', 'parseval_num_groups'])
+env_dict keys dict_keys(['env', 'change_freq', 'seed', 'base_task_name', 'env_type'])
+Start RL run!
+{'base_algorithm': 'ppo_agent', 'learning_rate': 0.0003, 'num_envs': 1, 'rollout_num_steps': 128, 'gamma': 0.99, 'gae_lambda': 0.95, 'num_minibatches': 4, 'update_epochs': 4, 'minibatch_size': 32, 'norm_adv': True, 'clip_coef': 0.2, 'clip_vloss': True, 'ent_coef': 0.0001, 'vf_coef': 0.5, 'max_grad_norm': 0.5, 'parseval_reg': 0.0001, 'layer_norm': False, 'layer_norm_no_params': False, 'weight_decay': 0, 'tuned_adam': False, 'perturb': 0.0, 'perturb_dist': 'xavier', 'weight_init': 'orthogonal', 'net_width': 64, 'net_activation': 'tanh', 'init_gain': None, 'parseval_num_groups': 1, 'device': 'cpu'}
+{'env': 'carl_sequence_lunarlander_0', 'change_freq': 500000, 'seed': 125, 'base_task_name': 'lunarlander_0', 'env_type': 'rl', 'local_run': False}
+Running on gpu: False
+{'GRAVITY_Y': 0.9134575551055222, 'MAIN_ENGINE_POWER': 1.3575946831862098, 'SIDE_ENGINE_POWER': 1.301381688035822, 'INITIAL_RANDOM': 1.0448831829968968, 'GRAVITY_X': -2.0}
+TASK 1  225 lunarlander_0
+time:  0.032 SPS: 0
+0 eval return -291.9440002441406 +/- 39.504
+time:  0.495 SPS: 842
+24999 eval return 1.1130000352859497 +/- 18.819
+time:  1.143 SPS: 729
+49999 eval return 23.562999725341797 +/- 32.639
+time:  2.009 SPS: 622
+74999 eval return 84.2760009765625 +/- 29.281
+time:  2.855 SPS: 583
+99999 eval return 75.08499908447266 +/- 17.486
+time:  3.657 SPS: 569
+124999 eval return 129.2570037841797 +/- 28.789
+time:  4.44 SPS: 563
+149999 eval return 174.60400390625 +/- 15.897
+time:  5.256 SPS: 554
+174999 eval return 204.58099365234375 +/- 25.418
+time:  6.022 SPS: 553
+199999 eval return 168.93600463867188 +/- 27.472
+time:  6.775 SPS: 553
+224999 eval return 197.82000732421875 +/- 25.301
+time:  7.539 SPS: 552
+249999 eval return 193.41700744628906 +/- 18.514
+time:  8.332 SPS: 550
+274999 eval return 168.41600036621094 +/- 29.614
+time:  9.097 SPS: 549
+299999 eval return 139.75399780273438 +/- 35.673
+time:  9.829 SPS: 551
+324999 eval return 198.48899841308594 +/- 31.858
+time:  10.56 SPS: 552
+349999 eval return 118.31099700927734 +/- 53.662
+time:  11.266 SPS: 554
+374999 eval return 185.5659942626953 +/- 30.209
+time:  12.013 SPS: 554
+399999 eval return 159.5500030517578 +/- 48.067
+time:  12.725 SPS: 556
+424999 eval return 125.48200225830078 +/- 33.607
+time:  13.443 SPS: 557
+449999 eval return 131.9759979248047 +/- 32.069
+time:  14.186 SPS: 558
+474999 eval return 142.15899658203125 +/- 28.411
+{'GRAVITY_Y': 0.22628391667242345, 'MAIN_ENGINE_POWER': 1.416309922773969, 'SIDE_ENGINE_POWER': 1.3890783754749252, 'INITIAL_RANDOM': 1.3700121482468193, 'GRAVITY_X': 0.0}
+TASK 2  325 lunarlander_0
+time:  14.958 SPS: 557
+499999 eval return -79.70099639892578 +/- 14.897
+time:  15.574 SPS: 561
+524999 eval return 66.66899871826172 +/- 54.942
+time:  16.19 SPS: 566
+549999 eval return 78.61699676513672 +/- 60.313
+time:  16.83 SPS: 569
+574999 eval return 58.67100143432617 +/- 41.844
+time:  17.491 SPS: 571
+599999 eval return 35.6349983215332 +/- 56.539
+time:  18.115 SPS: 575
+624999 eval return -22.67300033569336 +/- 35.836
+time:  18.743 SPS: 577
+649999 eval return -47.119998931884766 +/- 38.696
+time:  19.354 SPS: 581
+674999 eval return -13.647000312805176 +/- 48.75
+time:  19.966 SPS: 584
+699999 eval return -1.440000057220459 +/- 54.195
+time:  20.584 SPS: 587
+724999 eval return -77.31199645996094 +/- 28.928
+time:  21.193 SPS: 589
+749999 eval return -54.26499938964844 +/- 33.788
+time:  21.804 SPS: 592
+774999 eval return -23.60099983215332 +/- 43.081
+time:  22.408 SPS: 595
+799999 eval return -99.57599639892578 +/- 15.945
+time:  23.008 SPS: 597
+824999 eval return 25.672000885009766 +/- 54.631
+time:  23.627 SPS: 599
+849999 eval return -65.0469970703125 +/- 45.653
+time:  24.108 SPS: 604
+874999 eval return -6.293000221252441 +/- 45.076
+time:  24.517 SPS: 611
+899999 eval return 4.517000198364258 +/- 59.755
+time:  24.913 SPS: 618
+924999 eval return -45.04399871826172 +/- 42.775
+time:  25.302 SPS: 625
+949999 eval return 9.5 +/- 51.847
+time:  25.677 SPS: 632
+974999 eval return -37.630001068115234 +/- 47.047
+{'GRAVITY_Y': 1.4722038449025932, 'MAIN_ENGINE_POWER': 1.3995792821083617, 'SIDE_ENGINE_POWER': 1.230739681126466, 'INITIAL_RANDOM': 1.2805291762864555, 'GRAVITY_X': 2.0}
+TASK 3  425 lunarlander_0
+time:  26.012 SPS: 640
+999999 eval return -58.44200134277344 +/- 17.324
+done RL run. Time 26.018023493333022 min

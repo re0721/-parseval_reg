@@ -5,83 +5,90 @@
 ###
 
 GOOD_RPO_ENVS = [
-    "door-close-v2",
-    "sweep-into-v2",
-    "coffee-button-v2",
-    "window-open-v2",
-    "reach-wall-v2",
-    "drawer-close-v2",
-    "button-press-v2",
-    "plate-slide-back-side-v2",
-    "reach-v2",
-    "plate-slide-side-v2",
-    "coffee-push-v2",
-    "plate-slide-back-v2",
-    "soccer-v2",
-    "window-close-v2",
-    "handle-pull-side-v2",
-    "hand-insert-v2",
-    "door-lock-v2",
-    "push-v2",
-    "peg-unplug-side-v2"
+    "door-close-v3",
+    "sweep-into-v3",
+    "coffee-button-v3",
+    "window-open-v3",
+    "reach-wall-v3",
+    "drawer-close-v3",
+    "button-press-v3",
+    "plate-slide-back-side-v3",
+    "reach-v3",
+    "plate-slide-side-v3",
+    "coffee-push-v3",
+    "plate-slide-back-v3",
+    "soccer-v3",
+    "window-close-v3",
+    "handle-pull-side-v3",
+    "hand-insert-v3",
+    "door-lock-v3",
+    "push-v3",
+    "peg-unplug-side-v3"
 ]
 
 ## Removing the following tasks since they seem too difficult
 # 'lever_pull', 'peg-insert-side', 'button-press-topdown', 'button-press-wall',
 # 'stick-push', 'coffee-pull', 'push-wall'
 ## Removing more
-# "button-press-topdown-wall", "plate-slide-v2", "handle-press-side", "handle-press"
+# "button-press-topdown-wall", "plate-slide-v3", "handle-press-side", "handle-press"
 # currently 20 left
 
 
 # randomly generated below
 # we keep these fixed so the agents have a fair comparison
 
-RPO10_SEQ = [['handle-pull-side-v2', 'peg-unplug-side-v2', 'coffee-push-v2', 'soccer-v2', 'drawer-close-v2', 'reach-wall-v2', 'plate-slide-back-v2', 'window-open-v2', 'plate-slide-side-v2', 'plate-slide-back-side-v2'],
-             ['window-close-v2', 'window-open-v2', 'hand-insert-v2', 'door-lock-v2', 'reach-v2', 'button-press-v2', 'sweep-into-v2', 'coffee-button-v2', 'door-close-v2', 'push-v2'],
-             ['window-close-v2', 'reach-wall-v2', 'sweep-into-v2', 'reach-v2', 'soccer-v2', 'coffee-push-v2', 'plate-slide-side-v2', 'drawer-close-v2', 'hand-insert-v2', 'door-close-v2'],
-             ['plate-slide-back-v2', 'reach-wall-v2', 'door-lock-v2', 'peg-unplug-side-v2', 'push-v2', 'button-press-v2', 'plate-slide-back-side-v2', 'coffee-push-v2', 'coffee-button-v2', 'handle-pull-side-v2'],
-             ['push-v2', 'coffee-button-v2', 'sweep-into-v2', 'door-close-v2', 'drawer-close-v2', 'soccer-v2', 'peg-unplug-side-v2', 'hand-insert-v2', 'door-lock-v2', 'reach-v2'],
-             ['button-press-v2', 'plate-slide-back-side-v2', 'window-close-v2', 'plate-slide-side-v2', 'peg-unplug-side-v2', 'plate-slide-back-v2', 'coffee-button-v2', 'window-open-v2', 'handle-pull-side-v2', 'door-close-v2'],
-             ['push-v2', 'button-press-v2', 'plate-slide-back-v2', 'drawer-close-v2', 'soccer-v2', 'plate-slide-side-v2', 'reach-wall-v2', 'coffee-push-v2', 'window-close-v2', 'door-lock-v2'],
-             ['plate-slide-side-v2', 'hand-insert-v2', 'handle-pull-side-v2', 'plate-slide-back-side-v2', 'window-open-v2', 'sweep-into-v2', 'reach-wall-v2', 'reach-v2', 'soccer-v2', 'peg-unplug-side-v2'],
-             ['hand-insert-v2', 'reach-v2', 'window-close-v2', 'drawer-close-v2', 'window-open-v2', 'coffee-button-v2', 'plate-slide-back-v2', 'coffee-push-v2', 'push-v2', 'plate-slide-back-side-v2'],
-             ['sweep-into-v2', 'peg-unplug-side-v2', 'window-close-v2', 'door-lock-v2', 'hand-insert-v2', 'handle-pull-side-v2', 'window-open-v2', 'door-close-v2', 'button-press-v2', 'reach-wall-v2'],
-             ['reach-v2', 'door-lock-v2', 'sweep-into-v2', 'push-v2', 'button-press-v2', 'coffee-push-v2', 'handle-pull-side-v2', 'plate-slide-side-v2', 'door-close-v2', 'drawer-close-v2'],
-             ['plate-slide-back-side-v2', 'soccer-v2', 'sweep-into-v2', 'handle-pull-side-v2', 'plate-slide-side-v2', 'peg-unplug-side-v2', 'door-lock-v2', 'reach-v2', 'plate-slide-back-v2', 'coffee-button-v2'],
-             ['reach-wall-v2', 'plate-slide-back-v2', 'drawer-close-v2', 'hand-insert-v2', 'coffee-push-v2', 'coffee-button-v2', 'window-close-v2', 'plate-slide-back-side-v2', 'door-close-v2', 'button-press-v2'],
-             ['soccer-v2', 'drawer-close-v2', 'push-v2', 'sweep-into-v2', 'window-open-v2', 'reach-wall-v2', 'door-lock-v2', 'window-close-v2', 'reach-v2', 'hand-insert-v2'],
-             ['plate-slide-back-v2', 'plate-slide-side-v2', 'door-close-v2', 'push-v2', 'peg-unplug-side-v2', 'plate-slide-back-side-v2', 'coffee-push-v2', 'coffee-button-v2', 'button-press-v2', 'soccer-v2'],
-             ['hand-insert-v2', 'coffee-button-v2', 'soccer-v2', 'window-open-v2', 'push-v2', 'reach-v2', 'drawer-close-v2', 'handle-pull-side-v2', 'door-lock-v2', 'plate-slide-back-side-v2'],
-             ['coffee-push-v2', 'door-close-v2', 'handle-pull-side-v2', 'window-close-v2', 'plate-slide-back-v2', 'reach-wall-v2', 'sweep-into-v2', 'window-open-v2', 'plate-slide-side-v2', 'peg-unplug-side-v2'],
-             ['coffee-push-v2', 'button-press-v2', 'reach-v2', 'peg-unplug-side-v2', 'reach-wall-v2', 'door-close-v2', 'window-open-v2', 'handle-pull-side-v2', 'plate-slide-back-side-v2', 'soccer-v2'],
-             ['sweep-into-v2', 'plate-slide-side-v2', 'button-press-v2', 'drawer-close-v2', 'push-v2', 'coffee-button-v2', 'door-lock-v2', 'hand-insert-v2', 'plate-slide-back-v2', 'window-close-v2'],
-             ['reach-v2', 'button-press-v2', 'plate-slide-side-v2', 'door-close-v2', 'plate-slide-back-side-v2', 'plate-slide-back-v2', 'coffee-button-v2', 'sweep-into-v2', 'reach-wall-v2', 'drawer-close-v2']]
+RPO10_SEQ = [['handle-pull-side-v3', 'peg-unplug-side-v3', 'coffee-push-v3', 'soccer-v3', 'drawer-close-v3', 'reach-wall-v3', 'plate-slide-back-v3', 'window-open-v3', 'plate-slide-side-v3', 'plate-slide-back-side-v3'],
+             ['window-close-v3', 'window-open-v3', 'hand-insert-v3', 'door-lock-v3', 'reach-v3', 'button-press-v3', 'sweep-into-v3', 'coffee-button-v3', 'door-close-v3', 'push-v3'],
+             ['window-close-v3', 'reach-wall-v3', 'sweep-into-v3', 'reach-v3', 'soccer-v3', 'coffee-push-v3', 'plate-slide-side-v3', 'drawer-close-v3', 'hand-insert-v3', 'door-close-v3'],
+             ['plate-slide-back-v3', 'reach-wall-v3', 'door-lock-v3', 'peg-unplug-side-v3', 'push-v3', 'button-press-v3', 'plate-slide-back-side-v3', 'coffee-push-v3', 'coffee-button-v3', 'handle-pull-side-v3'],
+             ['push-v3', 'coffee-button-v3', 'sweep-into-v3', 'door-close-v3', 'drawer-close-v3', 'soccer-v3', 'peg-unplug-side-v3', 'hand-insert-v3', 'door-lock-v3', 'reach-v3'],
+             ['button-press-v3', 'plate-slide-back-side-v3', 'window-close-v3', 'plate-slide-side-v3', 'peg-unplug-side-v3', 'plate-slide-back-v3', 'coffee-button-v3', 'window-open-v3', 'handle-pull-side-v3', 'door-close-v3'],
+             ['push-v3', 'button-press-v3', 'plate-slide-back-v3', 'drawer-close-v3', 'soccer-v3', 'plate-slide-side-v3', 'reach-wall-v3', 'coffee-push-v3', 'window-close-v3', 'door-lock-v3'],
+             ['plate-slide-side-v3', 'hand-insert-v3', 'handle-pull-side-v3', 'plate-slide-back-side-v3', 'window-open-v3', 'sweep-into-v3', 'reach-wall-v3', 'reach-v3', 'soccer-v3', 'peg-unplug-side-v3'],
+             ['hand-insert-v3', 'reach-v3', 'window-close-v3', 'drawer-close-v3', 'window-open-v3', 'coffee-button-v3', 'plate-slide-back-v3', 'coffee-push-v3', 'push-v3', 'plate-slide-back-side-v3'],
+             ['sweep-into-v3', 'peg-unplug-side-v3', 'window-close-v3', 'door-lock-v3', 'hand-insert-v3', 'handle-pull-side-v3', 'window-open-v3', 'door-close-v3', 'button-press-v3', 'reach-wall-v3'],
+             ['reach-v3', 'door-lock-v3', 'sweep-into-v3', 'push-v3', 'button-press-v3', 'coffee-push-v3', 'handle-pull-side-v3', 'plate-slide-side-v3', 'door-close-v3', 'drawer-close-v3'],
+             ['plate-slide-back-side-v3', 'soccer-v3', 'sweep-into-v3', 'handle-pull-side-v3', 'plate-slide-side-v3', 'peg-unplug-side-v3', 'door-lock-v3', 'reach-v3', 'plate-slide-back-v3', 'coffee-button-v3'],
+             ['reach-wall-v3', 'plate-slide-back-v3', 'drawer-close-v3', 'hand-insert-v3', 'coffee-push-v3', 'coffee-button-v3', 'window-close-v3', 'plate-slide-back-side-v3', 'door-close-v3', 'button-press-v3'],
+             ['soccer-v3', 'drawer-close-v3', 'push-v3', 'sweep-into-v3', 'window-open-v3', 'reach-wall-v3', 'door-lock-v3', 'window-close-v3', 'reach-v3', 'hand-insert-v3'],
+             ['plate-slide-back-v3', 'plate-slide-side-v3', 'door-close-v3', 'push-v3', 'peg-unplug-side-v3', 'plate-slide-back-side-v3', 'coffee-push-v3', 'coffee-button-v3', 'button-press-v3', 'soccer-v3'],
+             ['hand-insert-v3', 'coffee-button-v3', 'soccer-v3', 'window-open-v3', 'push-v3', 'reach-v3', 'drawer-close-v3', 'handle-pull-side-v3', 'door-lock-v3', 'plate-slide-back-side-v3'],
+             ['coffee-push-v3', 'door-close-v3', 'handle-pull-side-v3', 'window-close-v3', 'plate-slide-back-v3', 'reach-wall-v3', 'sweep-into-v3', 'window-open-v3', 'plate-slide-side-v3', 'peg-unplug-side-v3'],
+             ['coffee-push-v3', 'button-press-v3', 'reach-v3', 'peg-unplug-side-v3', 'reach-wall-v3', 'door-close-v3', 'window-open-v3', 'handle-pull-side-v3', 'plate-slide-back-side-v3', 'soccer-v3'],
+             ['sweep-into-v3', 'plate-slide-side-v3', 'button-press-v3', 'drawer-close-v3', 'push-v3', 'coffee-button-v3', 'door-lock-v3', 'hand-insert-v3', 'plate-slide-back-v3', 'window-close-v3'],
+             ['reach-v3', 'button-press-v3', 'plate-slide-side-v3', 'door-close-v3', 'plate-slide-back-side-v3', 'plate-slide-back-v3', 'coffee-button-v3', 'sweep-into-v3', 'reach-wall-v3', 'drawer-close-v3']]
 
 
-RPO10_SEQ_OLD = [['plate-slide-back-v2', 'button-press-v2', 'handle-pull-side-v2', 'peg-unplug-side-v2', 'window-open-v2', 'handle-pull-v2', 'plate-slide-back-side-v2', 'coffee-push-v2', 'push-v2', 'reach-v2'],
-             ['door-close-v2', 'hand-insert-v2', 'window-close-v2', 'sweep-into-v2', 'drawer-close-v2', 'plate-slide-side-v2', 'soccer-v2', 'reach-wall-v2', 'door-lock-v2', 'coffee-button-v2'],
-             ['sweep-into-v2', 'plate-slide-side-v2', 'peg-unplug-side-v2', 'window-open-v2', 'door-lock-v2', 'reach-v2', 'reach-wall-v2', 'plate-slide-back-v2', 'door-close-v2', 'drawer-close-v2'],
-             ['handle-pull-v2', 'soccer-v2', 'handle-pull-side-v2', 'button-press-v2', 'push-v2', 'window-close-v2', 'coffee-button-v2', 'hand-insert-v2', 'plate-slide-back-side-v2', 'coffee-push-v2'],
-             ['window-open-v2', 'push-v2', 'reach-v2', 'plate-slide-back-v2', 'handle-pull-side-v2', 'soccer-v2', 'sweep-into-v2', 'coffee-button-v2', 'window-close-v2', 'coffee-push-v2'],
-             ['drawer-close-v2', 'peg-unplug-side-v2', 'plate-slide-side-v2', 'door-lock-v2', 'plate-slide-back-side-v2', 'reach-wall-v2', 'handle-pull-v2', 'button-press-v2', 'hand-insert-v2', 'door-close-v2'],
-             ['door-lock-v2', 'coffee-button-v2', 'hand-insert-v2', 'window-close-v2', 'button-press-v2', 'plate-slide-back-side-v2', 'plate-slide-back-v2', 'window-open-v2', 'reach-wall-v2', 'soccer-v2'],
-             ['drawer-close-v2', 'handle-pull-v2', 'push-v2', 'plate-slide-side-v2', 'coffee-push-v2', 'handle-pull-side-v2', 'sweep-into-v2', 'reach-v2', 'peg-unplug-side-v2', 'door-close-v2'],
-             ['hand-insert-v2', 'door-lock-v2', 'window-close-v2', 'reach-wall-v2', 'coffee-push-v2', 'drawer-close-v2', 'plate-slide-back-v2', 'handle-pull-v2', 'button-press-v2', 'sweep-into-v2'],
-             ['reach-v2', 'push-v2', 'plate-slide-back-side-v2', 'plate-slide-side-v2', 'door-close-v2', 'soccer-v2', 'peg-unplug-side-v2', 'window-open-v2', 'handle-pull-side-v2', 'coffee-button-v2']]
+# Shuffled order of RPO10_SEQ[19] (the "set0" sequence used in the main run),
+# for the task-order robustness check. Same 10 tasks as set0, only the order
+# differs. Fixed permutation numpy.default_rng(42).permutation(10) so every
+# method and seed sees the same order.
+SHUFFLED_SET0_SEQ = ['plate-slide-back-v3', 'coffee-button-v3', 'reach-v3', 'sweep-into-v3', 'door-close-v3', 'plate-slide-side-v3', 'plate-slide-back-side-v3', 'drawer-close-v3', 'button-press-v3', 'reach-wall-v3']
+
+
+RPO10_SEQ_OLD = [['plate-slide-back-v3', 'button-press-v3', 'handle-pull-side-v3', 'peg-unplug-side-v3', 'window-open-v3', 'handle-pull-v3', 'plate-slide-back-side-v3', 'coffee-push-v3', 'push-v3', 'reach-v3'],
+             ['door-close-v3', 'hand-insert-v3', 'window-close-v3', 'sweep-into-v3', 'drawer-close-v3', 'plate-slide-side-v3', 'soccer-v3', 'reach-wall-v3', 'door-lock-v3', 'coffee-button-v3'],
+             ['sweep-into-v3', 'plate-slide-side-v3', 'peg-unplug-side-v3', 'window-open-v3', 'door-lock-v3', 'reach-v3', 'reach-wall-v3', 'plate-slide-back-v3', 'door-close-v3', 'drawer-close-v3'],
+             ['handle-pull-v3', 'soccer-v3', 'handle-pull-side-v3', 'button-press-v3', 'push-v3', 'window-close-v3', 'coffee-button-v3', 'hand-insert-v3', 'plate-slide-back-side-v3', 'coffee-push-v3'],
+             ['window-open-v3', 'push-v3', 'reach-v3', 'plate-slide-back-v3', 'handle-pull-side-v3', 'soccer-v3', 'sweep-into-v3', 'coffee-button-v3', 'window-close-v3', 'coffee-push-v3'],
+             ['drawer-close-v3', 'peg-unplug-side-v3', 'plate-slide-side-v3', 'door-lock-v3', 'plate-slide-back-side-v3', 'reach-wall-v3', 'handle-pull-v3', 'button-press-v3', 'hand-insert-v3', 'door-close-v3'],
+             ['door-lock-v3', 'coffee-button-v3', 'hand-insert-v3', 'window-close-v3', 'button-press-v3', 'plate-slide-back-side-v3', 'plate-slide-back-v3', 'window-open-v3', 'reach-wall-v3', 'soccer-v3'],
+             ['drawer-close-v3', 'handle-pull-v3', 'push-v3', 'plate-slide-side-v3', 'coffee-push-v3', 'handle-pull-side-v3', 'sweep-into-v3', 'reach-v3', 'peg-unplug-side-v3', 'door-close-v3'],
+             ['hand-insert-v3', 'door-lock-v3', 'window-close-v3', 'reach-wall-v3', 'coffee-push-v3', 'drawer-close-v3', 'plate-slide-back-v3', 'handle-pull-v3', 'button-press-v3', 'sweep-into-v3'],
+             ['reach-v3', 'push-v3', 'plate-slide-back-side-v3', 'plate-slide-side-v3', 'door-close-v3', 'soccer-v3', 'peg-unplug-side-v3', 'window-open-v3', 'handle-pull-side-v3', 'coffee-button-v3']]
 
 
 RPO20_SEQ = [
-['door-lock-v2', 'handle-press-v2', 'handle-press-side-v2', 'button-press-v2', 'door-close-v2', 'hand-insert-v2', 'reach-v2', 'plate-slide-v2', 'handle-pull-side-v2', 'plate-slide-back-side-v2', 'plate-slide-back-v2', 'soccer-v2', 'sweep-into-v2', 'reach-wall-v2', 'window-open-v2', 'coffee-button-v2', 'coffee-push-v2', 'peg-unplug-side-v2', 'window-close-v2', 'plate-slide-side-v2'],
-['plate-slide-side-v2', 'plate-slide-back-v2', 'handle-press-side-v2', 'peg-unplug-side-v2', 'handle-pull-v2', 'reach-wall-v2', 'plate-slide-back-side-v2', 'button-press-v2', 'soccer-v2', 'hand-insert-v2', 'door-lock-v2', 'push-v2', 'window-close-v2', 'button-press-topdown-wall-v2', 'drawer-close-v2', 'sweep-into-v2', 'reach-v2', 'coffee-button-v2', 'coffee-push-v2', 'door-close-v2'],
-['hand-insert-v2', 'peg-unplug-side-v2', 'handle-pull-side-v2', 'handle-press-v2', 'button-press-v2', 'coffee-push-v2', 'plate-slide-back-v2', 'handle-pull-v2', 'button-press-topdown-wall-v2', 'push-v2', 'plate-slide-v2', 'door-close-v2', 'reach-v2', 'window-open-v2', 'coffee-button-v2', 'window-close-v2', 'drawer-close-v2', 'soccer-v2', 'plate-slide-side-v2', 'plate-slide-back-side-v2'],
-['handle-pull-side-v2', 'button-press-v2', 'window-open-v2', 'door-close-v2', 'reach-wall-v2', 'push-v2', 'hand-insert-v2', 'drawer-close-v2', 'handle-press-side-v2', 'handle-press-v2', 'door-lock-v2', 'plate-slide-back-side-v2', 'window-close-v2', 'sweep-into-v2', 'button-press-topdown-wall-v2', 'coffee-button-v2', 'soccer-v2', 'handle-pull-v2', 'plate-slide-back-v2', 'plate-slide-v2'],
-['soccer-v2', 'coffee-button-v2', 'handle-press-v2', 'handle-pull-side-v2', 'plate-slide-back-v2', 'door-lock-v2', 'drawer-close-v2', 'reach-v2', 'peg-unplug-side-v2', 'plate-slide-v2', 'reach-wall-v2', 'handle-pull-v2', 'push-v2', 'plate-slide-side-v2', 'coffee-push-v2', 'button-press-topdown-wall-v2', 'hand-insert-v2', 'sweep-into-v2', 'window-open-v2', 'handle-press-side-v2'],
-['door-close-v2', 'reach-wall-v2', 'coffee-push-v2', 'sweep-into-v2', 'door-lock-v2', 'plate-slide-v2', 'plate-slide-side-v2', 'peg-unplug-side-v2', 'handle-press-side-v2', 'handle-pull-v2', 'window-close-v2', 'push-v2', 'plate-slide-back-side-v2', 'reach-v2', 'handle-press-v2', 'window-open-v2', 'button-press-topdown-wall-v2', 'handle-pull-side-v2', 'drawer-close-v2', 'button-press-v2'],
-['window-open-v2', 'window-close-v2', 'handle-pull-v2', 'push-v2', 'plate-slide-back-v2', 'button-press-v2', 'reach-v2', 'plate-slide-v2', 'coffee-button-v2', 'handle-pull-side-v2', 'hand-insert-v2', 'reach-wall-v2', 'drawer-close-v2', 'plate-slide-back-side-v2', 'sweep-into-v2', 'button-press-topdown-wall-v2', 'door-close-v2', 'plate-slide-side-v2', 'door-lock-v2', 'coffee-push-v2'],
-['door-close-v2', 'soccer-v2', 'drawer-close-v2', 'handle-pull-side-v2', 'plate-slide-back-v2', 'hand-insert-v2', 'coffee-push-v2', 'reach-wall-v2', 'peg-unplug-side-v2', 'button-press-topdown-wall-v2', 'plate-slide-side-v2', 'reach-v2', 'window-close-v2', 'sweep-into-v2', 'button-press-v2', 'coffee-button-v2', 'handle-press-side-v2', 'handle-pull-v2', 'window-open-v2', 'handle-press-v2'],
-['handle-pull-side-v2', 'push-v2', 'plate-slide-back-v2', 'plate-slide-side-v2', 'peg-unplug-side-v2', 'reach-wall-v2', 'sweep-into-v2', 'door-lock-v2', 'plate-slide-v2', 'window-open-v2', 'handle-press-v2', 'hand-insert-v2', 'handle-press-side-v2', 'handle-pull-v2', 'soccer-v2', 'drawer-close-v2', 'reach-v2', 'button-press-v2', 'window-close-v2', 'plate-slide-back-side-v2'],
-['peg-unplug-side-v2', 'handle-press-side-v2', 'reach-wall-v2', 'door-close-v2', 'button-press-topdown-wall-v2', 'reach-v2', 'handle-pull-v2', 'drawer-close-v2', 'plate-slide-side-v2', 'coffee-button-v2', 'window-close-v2', 'handle-press-v2', 'door-lock-v2', 'coffee-push-v2', 'window-open-v2', 'plate-slide-back-side-v2', 'button-press-v2', 'push-v2', 'plate-slide-v2', 'soccer-v2']
+['door-lock-v3', 'handle-press-v3', 'handle-press-side-v3', 'button-press-v3', 'door-close-v3', 'hand-insert-v3', 'reach-v3', 'plate-slide-v3', 'handle-pull-side-v3', 'plate-slide-back-side-v3', 'plate-slide-back-v3', 'soccer-v3', 'sweep-into-v3', 'reach-wall-v3', 'window-open-v3', 'coffee-button-v3', 'coffee-push-v3', 'peg-unplug-side-v3', 'window-close-v3', 'plate-slide-side-v3'],
+['plate-slide-side-v3', 'plate-slide-back-v3', 'handle-press-side-v3', 'peg-unplug-side-v3', 'handle-pull-v3', 'reach-wall-v3', 'plate-slide-back-side-v3', 'button-press-v3', 'soccer-v3', 'hand-insert-v3', 'door-lock-v3', 'push-v3', 'window-close-v3', 'button-press-topdown-wall-v3', 'drawer-close-v3', 'sweep-into-v3', 'reach-v3', 'coffee-button-v3', 'coffee-push-v3', 'door-close-v3'],
+['hand-insert-v3', 'peg-unplug-side-v3', 'handle-pull-side-v3', 'handle-press-v3', 'button-press-v3', 'coffee-push-v3', 'plate-slide-back-v3', 'handle-pull-v3', 'button-press-topdown-wall-v3', 'push-v3', 'plate-slide-v3', 'door-close-v3', 'reach-v3', 'window-open-v3', 'coffee-button-v3', 'window-close-v3', 'drawer-close-v3', 'soccer-v3', 'plate-slide-side-v3', 'plate-slide-back-side-v3'],
+['handle-pull-side-v3', 'button-press-v3', 'window-open-v3', 'door-close-v3', 'reach-wall-v3', 'push-v3', 'hand-insert-v3', 'drawer-close-v3', 'handle-press-side-v3', 'handle-press-v3', 'door-lock-v3', 'plate-slide-back-side-v3', 'window-close-v3', 'sweep-into-v3', 'button-press-topdown-wall-v3', 'coffee-button-v3', 'soccer-v3', 'handle-pull-v3', 'plate-slide-back-v3', 'plate-slide-v3'],
+['soccer-v3', 'coffee-button-v3', 'handle-press-v3', 'handle-pull-side-v3', 'plate-slide-back-v3', 'door-lock-v3', 'drawer-close-v3', 'reach-v3', 'peg-unplug-side-v3', 'plate-slide-v3', 'reach-wall-v3', 'handle-pull-v3', 'push-v3', 'plate-slide-side-v3', 'coffee-push-v3', 'button-press-topdown-wall-v3', 'hand-insert-v3', 'sweep-into-v3', 'window-open-v3', 'handle-press-side-v3'],
+['door-close-v3', 'reach-wall-v3', 'coffee-push-v3', 'sweep-into-v3', 'door-lock-v3', 'plate-slide-v3', 'plate-slide-side-v3', 'peg-unplug-side-v3', 'handle-press-side-v3', 'handle-pull-v3', 'window-close-v3', 'push-v3', 'plate-slide-back-side-v3', 'reach-v3', 'handle-press-v3', 'window-open-v3', 'button-press-topdown-wall-v3', 'handle-pull-side-v3', 'drawer-close-v3', 'button-press-v3'],
+['window-open-v3', 'window-close-v3', 'handle-pull-v3', 'push-v3', 'plate-slide-back-v3', 'button-press-v3', 'reach-v3', 'plate-slide-v3', 'coffee-button-v3', 'handle-pull-side-v3', 'hand-insert-v3', 'reach-wall-v3', 'drawer-close-v3', 'plate-slide-back-side-v3', 'sweep-into-v3', 'button-press-topdown-wall-v3', 'door-close-v3', 'plate-slide-side-v3', 'door-lock-v3', 'coffee-push-v3'],
+['door-close-v3', 'soccer-v3', 'drawer-close-v3', 'handle-pull-side-v3', 'plate-slide-back-v3', 'hand-insert-v3', 'coffee-push-v3', 'reach-wall-v3', 'peg-unplug-side-v3', 'button-press-topdown-wall-v3', 'plate-slide-side-v3', 'reach-v3', 'window-close-v3', 'sweep-into-v3', 'button-press-v3', 'coffee-button-v3', 'handle-press-side-v3', 'handle-pull-v3', 'window-open-v3', 'handle-press-v3'],
+['handle-pull-side-v3', 'push-v3', 'plate-slide-back-v3', 'plate-slide-side-v3', 'peg-unplug-side-v3', 'reach-wall-v3', 'sweep-into-v3', 'door-lock-v3', 'plate-slide-v3', 'window-open-v3', 'handle-press-v3', 'hand-insert-v3', 'handle-press-side-v3', 'handle-pull-v3', 'soccer-v3', 'drawer-close-v3', 'reach-v3', 'button-press-v3', 'window-close-v3', 'plate-slide-back-side-v3'],
+['peg-unplug-side-v3', 'handle-press-side-v3', 'reach-wall-v3', 'door-close-v3', 'button-press-topdown-wall-v3', 'reach-v3', 'handle-pull-v3', 'drawer-close-v3', 'plate-slide-side-v3', 'coffee-button-v3', 'window-close-v3', 'handle-press-v3', 'door-lock-v3', 'coffee-push-v3', 'window-open-v3', 'plate-slide-back-side-v3', 'button-press-v3', 'push-v3', 'plate-slide-v3', 'soccer-v3']
 ]
 
 
@@ -89,29 +96,29 @@ RPO20_SEQ = [
 
 
 GOOD_RPO_SEQS = [
-    ['sweep-into-v2', 'door-close-v2', 'drawer-close-v2', 'button-press-v2', 'window-close-v2', 'hand-insert-v2', 'soccer-v2', 'handle-pull-side-v2'],
-    ['peg-unplug-side-v2', 'soccer-v2', 'plate-slide-side-v2', 'plate-slide-back-side-v2', 'reach-wall-v2', 'reach-v2', 'drawer-close-v2', 'coffee-button-v2'],
-    ['window-close-v2', 'window-open-v2', 'button-press-topdown-wall-v2', 'handle-press-v2', 'coffee-button-v2', 'handle-press-side-v2', 'push-v2', 'plate-slide-back-v2'],
-    ['plate-slide-v2', 'door-close-v2', 'sweep-into-v2', 'door-lock-v2', 'coffee-push-v2', 'handle-press-v2', 'hand-insert-v2', 'reach-wall-v2'],
-    ['coffee-button-v2', 'soccer-v2', 'plate-slide-v2', 'handle-pull-v2', 'window-open-v2', 'handle-press-v2', 'handle-pull-side-v2', 'drawer-close-v2'],
-    ['handle-pull-side-v2', 'handle-press-v2', 'window-open-v2', 'handle-pull-v2', 'window-close-v2', 'coffee-button-v2', 'plate-slide-v2', 'coffee-push-v2'],
-    ['button-press-v2', 'button-press-topdown-wall-v2', 'handle-press-side-v2', 'reach-wall-v2', 'hand-insert-v2', 'plate-slide-side-v2', 'peg-unplug-side-v2', 'push-v2'],
-    ['peg-unplug-side-v2', 'reach-wall-v2', 'plate-slide-side-v2', 'door-close-v2', 'door-lock-v2', 'handle-press-side-v2', 'reach-v2', 'plate-slide-back-side-v2'],
-    ['coffee-push-v2', 'handle-pull-v2', 'sweep-into-v2', 'plate-slide-back-v2', 'plate-slide-back-side-v2', 'reach-v2', 'plate-slide-v2', 'window-open-v2'],
-    ['button-press-topdown-wall-v2', 'push-v2', 'drawer-close-v2', 'door-lock-v2', 'plate-slide-back-v2', 'door-close-v2', 'sweep-into-v2', 'button-press-v2']
+    ['sweep-into-v3', 'door-close-v3', 'drawer-close-v3', 'button-press-v3', 'window-close-v3', 'hand-insert-v3', 'soccer-v3', 'handle-pull-side-v3'],
+    ['peg-unplug-side-v3', 'soccer-v3', 'plate-slide-side-v3', 'plate-slide-back-side-v3', 'reach-wall-v3', 'reach-v3', 'drawer-close-v3', 'coffee-button-v3'],
+    ['window-close-v3', 'window-open-v3', 'button-press-topdown-wall-v3', 'handle-press-v3', 'coffee-button-v3', 'handle-press-side-v3', 'push-v3', 'plate-slide-back-v3'],
+    ['plate-slide-v3', 'door-close-v3', 'sweep-into-v3', 'door-lock-v3', 'coffee-push-v3', 'handle-press-v3', 'hand-insert-v3', 'reach-wall-v3'],
+    ['coffee-button-v3', 'soccer-v3', 'plate-slide-v3', 'handle-pull-v3', 'window-open-v3', 'handle-press-v3', 'handle-pull-side-v3', 'drawer-close-v3'],
+    ['handle-pull-side-v3', 'handle-press-v3', 'window-open-v3', 'handle-pull-v3', 'window-close-v3', 'coffee-button-v3', 'plate-slide-v3', 'coffee-push-v3'],
+    ['button-press-v3', 'button-press-topdown-wall-v3', 'handle-press-side-v3', 'reach-wall-v3', 'hand-insert-v3', 'plate-slide-side-v3', 'peg-unplug-side-v3', 'push-v3'],
+    ['peg-unplug-side-v3', 'reach-wall-v3', 'plate-slide-side-v3', 'door-close-v3', 'door-lock-v3', 'handle-press-side-v3', 'reach-v3', 'plate-slide-back-side-v3'],
+    ['coffee-push-v3', 'handle-pull-v3', 'sweep-into-v3', 'plate-slide-back-v3', 'plate-slide-back-side-v3', 'reach-v3', 'plate-slide-v3', 'window-open-v3'],
+    ['button-press-topdown-wall-v3', 'push-v3', 'drawer-close-v3', 'door-lock-v3', 'plate-slide-back-v3', 'door-close-v3', 'sweep-into-v3', 'button-press-v3']
     ]
 
 ## OLD LIST 1st attempt
-# GOOD_RPO_SEQS = [['plate-slide-back-v2', 'button-press-v2', 'door-close-v2', 'handle-press-v2', 'button-press-topdown-v2', 'plate-slide-v2', 'lever-pull-v2', 'peg-insert-side-v2'],
-#                  ['plate-slide-side-v2', 'lever-pull-v2', 'window-close-v2', 'drawer-close-v2', 'soccer-v2', 'sweep-into-v2', 'button-press-wall-v2', 'handle-press-v2'],
-#                  ['button-press-wall-v2', 'handle-press-side-v2', 'coffee-push-v2', 'peg-unplug-side-v2', 'soccer-v2', 'button-press-v2', 'button-press-topdown-wall-v2', 'platex`-slide-v2'],
-#                  ['reach-v2', 'push-wall-v2', 'coffee-button-v2', 'plate-slide-back-side-v2', 'stick-push-v2', 'plate-slide-v2', 'coffee-pull-v2', 'handle-press-v2'],
-#                  ['plate-slide-back-side-v2', 'push-v2', 'peg-insert-side-v2', 'reach-wall-v2', 'sweep-into-v2', 'button-press-wall-v2', 'handle-pull-side-v2', 'coffee-button-v2'],
-#                  ['stick-push-v2', 'reach-wall-v2', 'peg-insert-side-v2', 'coffee-pull-v2', 'handle-pull-v2', 'coffee-push-v2', 'door-lock-v2', 'plate-slide-back-side-v2'],
-#                  ['window-open-v2', 'peg-unplug-side-v2', 'hand-insert-v2', 'door-lock-v2', 'button-press-v2', 'handle-pull-v2', 'reach-v2', 'handle-press-side-v2'],
-#                  ['coffee-button-v2', 'plate-slide-side-v2', 'door-close-v2', 'drawer-close-v2', 'window-close-v2', 'plate-slide-back-v2', 'button-press-topdown-v2', 'button-press-topdown-wall-v2'],
-#                  ['reach-v2', 'push-wall-v2', 'drawer-close-v2', 'hand-insert-v2', 'window-open-v2', 'handle-press-side-v2', 'button-press-topdown-v2', 'door-close-v2'],
-#                  ['coffee-push-v2', 'window-open-v2', 'sweep-into-v2', 'handle-pull-side-v2', 'reach-wall-v2', 'plate-slide-side-v2', 'push-v2', 'plate-slide-back-v2']]
+# GOOD_RPO_SEQS = [['plate-slide-back-v3', 'button-press-v3', 'door-close-v3', 'handle-press-v3', 'button-press-topdown-v3', 'plate-slide-v3', 'lever-pull-v3', 'peg-insert-side-v3'],
+#                  ['plate-slide-side-v3', 'lever-pull-v3', 'window-close-v3', 'drawer-close-v3', 'soccer-v3', 'sweep-into-v3', 'button-press-wall-v3', 'handle-press-v3'],
+#                  ['button-press-wall-v3', 'handle-press-side-v3', 'coffee-push-v3', 'peg-unplug-side-v3', 'soccer-v3', 'button-press-v3', 'button-press-topdown-wall-v3', 'platex`-slide-v3'],
+#                  ['reach-v3', 'push-wall-v3', 'coffee-button-v3', 'plate-slide-back-side-v3', 'stick-push-v3', 'plate-slide-v3', 'coffee-pull-v3', 'handle-press-v3'],
+#                  ['plate-slide-back-side-v3', 'push-v3', 'peg-insert-side-v3', 'reach-wall-v3', 'sweep-into-v3', 'button-press-wall-v3', 'handle-pull-side-v3', 'coffee-button-v3'],
+#                  ['stick-push-v3', 'reach-wall-v3', 'peg-insert-side-v3', 'coffee-pull-v3', 'handle-pull-v3', 'coffee-push-v3', 'door-lock-v3', 'plate-slide-back-side-v3'],
+#                  ['window-open-v3', 'peg-unplug-side-v3', 'hand-insert-v3', 'door-lock-v3', 'button-press-v3', 'handle-pull-v3', 'reach-v3', 'handle-press-side-v3'],
+#                  ['coffee-button-v3', 'plate-slide-side-v3', 'door-close-v3', 'drawer-close-v3', 'window-close-v3', 'plate-slide-back-v3', 'button-press-topdown-v3', 'button-press-topdown-wall-v3'],
+#                  ['reach-v3', 'push-wall-v3', 'drawer-close-v3', 'hand-insert-v3', 'window-open-v3', 'handle-press-side-v3', 'button-press-topdown-v3', 'door-close-v3'],
+#                  ['coffee-push-v3', 'window-open-v3', 'sweep-into-v3', 'handle-pull-side-v3', 'reach-wall-v3', 'plate-slide-side-v3', 'push-v3', 'plate-slide-back-v3']]
 
 
 if __name__ == "__main__":

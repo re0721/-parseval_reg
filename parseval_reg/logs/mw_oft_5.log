@@ -1,0 +1,105 @@
+D:\anaconda\envs\parseval\lib\site-packages\gymnasium\spaces\box.py:231: UserWarning: [33mWARN: Box low's precision lowered by casting to float32, current low.dtype=float64[0m
+  gym.logger.warn(
+D:\anaconda\envs\parseval\lib\site-packages\gymnasium\spaces\box.py:297: UserWarning: [33mWARN: Box high's precision lowered by casting to float32, current high.dtype=float64[0m
+  gym.logger.warn(
+D:\anaconda\envs\parseval\lib\site-packages\gymnasium\spaces\box.py:231: UserWarning: [33mWARN: Box low's precision lowered by casting to float32, current low.dtype=float64[0m
+  gym.logger.warn(
+D:\anaconda\envs\parseval\lib\site-packages\gymnasium\spaces\box.py:297: UserWarning: [33mWARN: Box high's precision lowered by casting to float32, current high.dtype=float64[0m
+  gym.logger.warn(
+agent_dict keys dict_keys(['base_algorithm', 'learning_rate', 'num_envs', 'rollout_num_steps', 'gamma', 'gae_lambda', 'num_minibatches', 'update_epochs', 'minibatch_size', 'norm_adv', 'clip_coef', 'clip_vloss', 'ent_coef', 'vf_coef', 'max_grad_norm', 'rpo_alpha', 'parseval_reg', 'input_scale', 'learnable_input_scale', 'add_diag_layer', 'lie_group', 'pion', 'pion_block_size', 'oft', 'poet', 'layer_norm', 'layer_norm_no_params', 'weight_decay', 'tuned_adam', 'perturb', 'perturb_dist', 'regen', 'regen_wasserstein', 'weight_init', 'net_width', 'net_activation', 'init_gain', 'parseval_norm', 'parseval_num_groups'])
+env_dict keys dict_keys(['env', 'change_freq', 'seed', 'env_sequence', 'env_type'])
+Start RL run!
+{'base_algorithm': 'ppo_agent', 'learning_rate': 0.001, 'num_envs': 1, 'rollout_num_steps': 2048, 'gamma': 0.99, 'gae_lambda': 0.95, 'num_minibatches': 32, 'update_epochs': 10, 'minibatch_size': 64, 'norm_adv': True, 'clip_coef': 0.2, 'clip_vloss': True, 'ent_coef': 0.0, 'vf_coef': 0.5, 'max_grad_norm': 0.5, 'rpo_alpha': 0.5, 'parseval_reg': 0, 'input_scale': 1, 'learnable_input_scale': False, 'add_diag_layer': False, 'lie_group': False, 'pion': False, 'pion_block_size': None, 'oft': True, 'poet': False, 'layer_norm': False, 'layer_norm_no_params': False, 'weight_decay': 0, 'tuned_adam': False, 'perturb': 0.0, 'perturb_dist': 'xavier', 'regen': 0.0, 'regen_wasserstein': False, 'weight_init': 'orthogonal', 'net_width': 64, 'net_activation': 'tanh', 'init_gain': None, 'parseval_norm': False, 'parseval_num_groups': 1, 'device': 'cpu'}
+{'env': 'metaworld_sequence_set0', 'change_freq': 1000000.0, 'seed': 128, 'env_sequence': 'set0', 'env_type': 'rl', 'local_run': False}
+Running on gpu: False
+TASK 1  228 reach-v3
+time:  0.069 SPS: 0
+0 success 0.0 +/- 0.0
+0 eval return 413.871 +/- 46.7
+time:  1.966 SPS: 211
+24999 success 0.8 +/- 0.133
+24999 eval return 1539.04 +/- 17.73
+time:  3.967 SPS: 210
+49999 success 1.0 +/- 0.0
+49999 eval return 1724.854 +/- 18.683
+time:  6.002 SPS: 208
+74999 success 1.0 +/- 0.0
+74999 eval return 1785.581 +/- 22.16
+time:  8.127 SPS: 205
+99999 success 1.0 +/- 0.0
+99999 eval return 1807.721 +/- 8.703
+time:  10.404 SPS: 200
+124999 success 1.0 +/- 0.0
+124999 eval return 1846.749 +/- 4.703
+time:  12.533 SPS: 199
+149999 success 1.0 +/- 0.0
+149999 eval return 1828.252 +/- 6.528
+time:  14.629 SPS: 199
+174999 success 1.0 +/- 0.0
+174999 eval return 1798.5 +/- 12.515
+time:  16.599 SPS: 200
+199999 success 1.0 +/- 0.0
+199999 eval return 1786.486 +/- 10.124
+time:  18.684 SPS: 200
+224999 success 1.0 +/- 0.0
+224999 eval return 1791.57 +/- 8.424
+time:  20.724 SPS: 201
+249999 success 1.0 +/- 0.0
+249999 eval return 1798.136 +/- 5.951
+time:  22.775 SPS: 201
+274999 success 1.0 +/- 0.0
+274999 eval return 1802.367 +/- 8.373
+time:  24.818 SPS: 201
+299999 success 1.0 +/- 0.0
+299999 eval return 1736.145 +/- 21.653
+time:  26.815 SPS: 202
+324999 success 1.0 +/- 0.0
+324999 eval return 1780.228 +/- 11.105
+time:  28.749 SPS: 202
+349999 success 1.0 +/- 0.0
+349999 eval return 1783.16 +/- 14.505
+time:  30.803 SPS: 202
+374999 success 1.0 +/- 0.0
+374999 eval return 1816.189 +/- 5.881
+time:  32.761 SPS: 203
+399999 success 1.0 +/- 0.0
+399999 eval return 1782.061 +/- 16.693
+time:  34.731 SPS: 203
+424999 success 1.0 +/- 0.0
+424999 eval return 1820.901 +/- 7.954
+time:  36.655 SPS: 204
+449999 success 1.0 +/- 0.0
+449999 eval return 1803.087 +/- 5.208
+time:  38.629 SPS: 204
+474999 success 1.0 +/- 0.0
+474999 eval return 1797.024 +/- 14.495
+time:  40.664 SPS: 204
+499999 success 1.0 +/- 0.0
+499999 eval return 1804.961 +/- 11.894
+time:  42.694 SPS: 204
+524999 success 1.0 +/- 0.0
+524999 eval return 1723.151 +/- 15.016
+time:  44.693 SPS: 205
+549999 success 1.0 +/- 0.0
+549999 eval return 1766.272 +/- 11.646
+time:  46.698 SPS: 205
+574999 success 1.0 +/- 0.0
+574999 eval return 1789.488 +/- 7.949
+time:  48.617 SPS: 205
+599999 success 1.0 +/- 0.0
+599999 eval return 1747.371 +/- 27.252
+time:  50.649 SPS: 205
+624999 success 1.0 +/- 0.0
+624999 eval return 1773.321 +/- 14.031
+time:  52.608 SPS: 205
+649999 success 1.0 +/- 0.0
+649999 eval return 1781.3 +/- 13.928
+time:  54.556 SPS: 206
+674999 success 1.0 +/- 0.0
+674999 eval return 1751.604 +/- 26.638
+time:  56.537 SPS: 206
+699999 success 1.0 +/- 0.0
+699999 eval return 1735.436 +/- 21.403
+time:  58.532 SPS: 206
+724999 success 1.0 +/- 0.0
+724999 eval return 1753.139 +/- 12.348

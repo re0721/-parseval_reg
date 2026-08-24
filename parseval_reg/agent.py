@@ -14,9 +14,16 @@ from torch.distributions.categorical import Categorical
 
 from collections import OrderedDict
 
-from minimal.utils import GroupSort
-from minimal.utils import (create_block_diag_matrix, IdentityActivation,
+from utils import GroupSort
+from utils import (create_block_diag_matrix, IdentityActivation,
                                     DiagLinear, ScaleLayer, ConcatReLU)
+
+import geoopt
+from geoopt.manifolds import Stiefel
+from geoopt.tensor import ManifoldParameter
+
+from pion_optimizer import Pion
+from poet_official import PoetOfficialLinear
 
 
 # torch.manual_seed(5)
@@ -38,7 +45,10 @@ class PPO_Agent:
                  perturb=0.0, perturb_dist='xavier',
                  regen=0.0, regen_wasserstein=False,
                  rpo_alpha=0, net_width=64, net_activation='tanh', init_gain=None,
-                 input_scale=1, learnable_input_scale=False,
+                 input_scale=1, learnable_input_scale=False, lie_group=False, pion=False,
+                 pion_block_size=None, oft=False, poet=False, oet_num_blocks=1,
+                 poet_exact_cayley=False,
+                 pion_multiplicative=False,
                  seed=None, *args, **kwargs):
 
         self.env = env
@@ -68,6 +78,14 @@ class PPO_Agent:
         # self.parseval_last_layer = parseval_last_layer  # removed from uses
         self.parseval_num_groups = parseval_num_groups
         self.rpo_alpha = rpo_alpha
+        self.lie_group = lie_group
+        self.pion = pion
+        self.pion_block_size = pion_block_size
+        self.pion_multiplicative = pion_multiplicative
+        self.oft = oft
+        self.poet = poet
+        self.oet_num_blocks = oet_num_blocks
+        self.poet_exact_cayley = poet_exact_cayley
 
         self.perturb = perturb  # for shrink-and-perturb. Shrink is implemented through weight decay
         self.perturb_dist = perturb_dist  # either "xavier" or "orthogonal". The type of noise to add.
@@ -108,6 +126,9 @@ class PPO_Agent:
                                             net_width=self.net_width, activation=self.net_activation,
                                             parseval_reg=self.parseval_reg, add_diag_layer=self.add_diag_layer,
                                             input_scale=input_scale, learnable_input_scale=learnable_input_scale,
+                                            lie_group=self.lie_group,
+                                            oft=self.oft, poet=self.poet, oet_num_blocks=self.oet_num_blocks,
+                                            poet_exact_cayley=self.poet_exact_cayley,
                                             discrete_action_space=self.discrete_action_space)
         if self.regen > 0:  # make a copy of the initial weights (we don't update these)
             self.agent_networks_init = AgentNetworks(env.env, network_type, layer_norm=self.layer_norm, layer_norm_no_params=self.layer_norm_no_params,
@@ -118,7 +139,19 @@ class PPO_Agent:
             self.agent_networks_init.load_state_dict(self.agent_networks.state_dict())
             self.agent_networks_init.requires_grad_(False)
 
-        if self.tuned_adam:
+        if self.pion:
+            # Spectrum-preserving Lie-group optimizer (Pion).
+            # multiplicative variant keeps the paper-Algorithm-1 cross term (beta2=0.95);
+            # official additive update uses beta2=0.999.
+            if self.pion_multiplicative:
+                self.optimizer = Pion(self.agent_networks.parameters(), lr=self.learning_rate,
+                                      betas=(0.9, 0.95), multiplicative=True)
+            else:
+                self.optimizer = Pion(self.agent_networks.parameters(), lr=self.learning_rate)
+        elif self.lie_group:
+            # StiefelLinear uses ManifoldParameter -> RiemannianAdam.
+            self.optimizer = geoopt.optim.RiemannianAdam(self.agent_networks.parameters(), lr=self.learning_rate, eps=1e-5)
+        elif self.tuned_adam:
             if weight_decay > 0:
                 self.optimizer = optim.AdamW(self.agent_networks.parameters(), lr=self.learning_rate,
                                              betas=(0.9, 0.9), eps=1e-3, weight_decay=weight_decay)
@@ -364,7 +397,7 @@ class PPO_Agent:
                 if self.perturb > 0:
                     dummy_model = AgentNetworks(self.env.env, layer_norm=self.layer_norm,
                                                 layer_norm_no_params=self.layer_norm_no_params,
-                                                tsallis_ent_coef=self.tsallis_entropy,
+                                                tsallis_ent_coef=None,
                                                 weight_init=self.perturb_dist, init_gain=self.init_gain,
                                                 net_width=self.net_width,
                                                 activation=self.net_activation,
@@ -451,7 +484,7 @@ class PPO_Agent:
             actor_gradient_singular_values = []
             actor_singular_values = []
             for name, param in self.agent_networks.actor_mean.named_parameters():
-                if 'weight' in name and 'linear' in name:
+                if 'weight' in name and 'linear' in name and param.grad is not None:
                     # print("SHAPE", torch.atleast_2d(param.grad).shape)
                     _, grad_singular_values, _ = torch.svd(torch.atleast_2d(param.grad))
                     _, singular_values, _ = torch.svd(torch.atleast_2d(param))
@@ -462,7 +495,7 @@ class PPO_Agent:
             critic_gradient_singular_values = []
             critic_singular_values = []
             for name, param in self.agent_networks.critic.named_parameters():
-                if 'weight' in name and 'linear' in name:
+                if 'weight' in name and 'linear' in name and param.grad is not None:
                     _, grad_singular_values, _ = torch.svd(torch.atleast_2d(param.grad))
                     _, singular_values, _ = torch.svd(torch.atleast_2d(param))
 
@@ -561,6 +594,90 @@ class PPO_Agent:
         return logged_values
 
 
+class StiefelLinear(nn.Module):
+    """Dense layer whose weight lives on the Stiefel manifold (orthonormal rows,
+    W W^T = I). This is Lie-group / Riemannian optimization of orthogonal weights
+    — the 'hard' counterpart of Parseval's soft regularization.
+
+    geoopt's Stiefel constrains orthonormal COLUMNS (X^T X = I, X in R^{n x m},
+    n >= m), so we store X = W^T (shape [in, out]) on the manifold, which makes
+    W W^T = I (orthonormal rows of the linear weight), matching Parseval.
+    """
+    def __init__(self, in_features, out_features, bias=True):
+        super().__init__()
+        self.in_features = in_features
+        self.out_features = out_features
+        assert in_features >= out_features, f"Stiefel (orthonormal rows) needs in>=out, got {in_features}<{out_features}"
+        self.manifold = Stiefel(canonical=True)  # X^T X = I, X shape [in, out]
+        X = torch.empty(in_features, out_features)
+        torch.nn.init.orthogonal_(X, gain=1.0)  # orthonormal columns of X -> W W^T = I
+        self.weight = ManifoldParameter(X, manifold=self.manifold)  # stores W^T
+        if bias:
+            self.bias = nn.Parameter(torch.zeros(out_features))
+        else:
+            self.bias = None
+
+    def forward(self, x):
+        return torch.nn.functional.linear(x, self.weight.t(), self.bias)
+
+
+class OETLinear(nn.Module):
+    """Orthogonal Equivalence Transformation linear layer (OFT / POET).
+
+    Follows the official implementation (Zeju1997/oft): the orthogonal matrix is
+    parameterized by the CAYLEY transform R = (I + skew)(I - skew)^{-1}, where
+    skew = 0.5*(Q - Q^T) and Q is a learnable matrix initialized to zero (so R
+    starts at identity). R is block-diagonal (num_blocks blocks) to avoid the
+    O(d^3) inverse for wide input layers.
+
+    OFT  : W = W0 @ R^T        (one-sided, input rotation)
+    POET : W = P @ W0 @ R^T    (two-sided, P on output, R on input)
+    """
+    def __init__(self, in_features, out_features, two_sided=False, bias=True, num_blocks=1):
+        super().__init__()
+        self.in_features = in_features
+        self.out_features = out_features
+        self.two_sided = two_sided
+        # fall back to full R if num_blocks doesn't divide in_features
+        self.num_blocks = num_blocks if in_features % num_blocks == 0 else 1
+        self.block_size = in_features // self.num_blocks
+        # frozen base weight: Gaussian init -> non-degenerate spectrum
+        self.W0 = nn.Parameter(torch.empty(out_features, in_features))
+        torch.nn.init.xavier_normal_(self.W0, gain=1.0)
+        self.W0.requires_grad_(False)
+        # learnable Q (skew-symmetric via Cayley), init zero -> R = I
+        self.Q_in = nn.Parameter(torch.zeros(self.num_blocks, self.block_size, self.block_size))
+        if two_sided:
+            self.Q_out = nn.Parameter(torch.zeros(out_features, out_features))
+        if bias:
+            self.bias = nn.Parameter(torch.zeros(out_features))
+        else:
+            self.bias = None
+
+    def _cayley_blocks(self, Q):
+        # Q: (nb, b, b) -> (nb, b, b) orthogonal blocks via Cayley
+        skew = 0.5 * (Q - Q.transpose(1, 2))
+        I = torch.eye(self.block_size, device=Q.device, dtype=Q.dtype).unsqueeze(0)
+        return (I + skew) @ torch.inverse(I - skew)
+
+    def _cayley(self, Q):
+        # Q: (d, d) -> (d, d) orthogonal via Cayley
+        skew = 0.5 * (Q - Q.t())
+        I = torch.eye(Q.shape[0], device=Q.device, dtype=Q.dtype)
+        return (I + skew) @ torch.inverse(I - skew)
+
+    def forward(self, x):
+        R_blocks = self._cayley_blocks(self.Q_in)  # (nb, b, b)
+        # W = W0 @ R^T, block-wise on the input side
+        W0_blocks = self.W0.view(self.out_features, self.num_blocks, self.block_size)
+        W = torch.einsum('onb,nbs->ons', W0_blocks, R_blocks.transpose(1, 2))
+        W = W.reshape(self.out_features, self.in_features)
+        if self.two_sided:
+            P = self._cayley(self.Q_out)  # (dout, dout) orthogonal
+            W = P @ W
+        return torch.nn.functional.linear(x, W, self.bias)
+
+
 def orthogonal_layer_init(layer, gain=np.sqrt(2), bias_const=0.0):
     if gain is None:
         gain = np.sqrt(2)
@@ -578,12 +695,29 @@ def xavier_layer_init(layer, gain=1):
     return layer
 
 
+def ones_layer_init(layer, gain=1.0, bias_const=0.0):
+    """All-constant (rank-1) init: the degenerate extreme of the spectrum.
+
+    A constant matrix has a single nonzero singular value (stable rank = 1).
+    For spectrum-preserving methods this LOCKS the spectrum at rank 1, so the
+    network keeps exactly one effective direction and cannot learn. It is the
+    negative control for 'the preserved spectrum must be a healthy, shaped one'.
+    `gain` scales the constant (gain=1 -> all ones, gain=0.1 -> all 0.1).
+    """
+    if gain is None:
+        gain = 1.0
+    torch.nn.init.constant_(layer.weight, gain)
+    if layer.bias is not None:
+        torch.nn.init.constant_(layer.bias, bias_const)
+    return layer
+
+
 class AgentNetworks(nn.Module):
     def __init__(self, env, network_type, weight_init='orthogonal', init_gain=None,
                  layer_norm=False, layer_norm_no_params=False, tsallis_ent_coef=None, rpo_alpha=0,
                  net_width=64, activation=None, parseval_reg=0, add_diag_layer=False,
-                 input_scale=1, learnable_input_scale=False, project_weight_dim=None,
-                 discrete_action_space=None):
+                 input_scale=1, learnable_input_scale=False, lie_group=False, oft=False, poet=False,
+                 oet_num_blocks=1, poet_exact_cayley=False, project_weight_dim=None, discrete_action_space=None):
         super().__init__()
         self.network_type = network_type  # mlp or resnet
         self.tsallis_ent_coef = tsallis_ent_coef
@@ -594,6 +728,11 @@ class AgentNetworks(nn.Module):
         self.activation = activation
         self.parseval_reg = parseval_reg
         self.add_diag_layer = add_diag_layer
+        self.lie_group = lie_group
+        self.oft = oft
+        self.poet = poet
+        self.oet_num_blocks = oet_num_blocks
+        self.poet_exact_cayley = poet_exact_cayley
         self.input_scale = input_scale
         self.learnable_input_scale = learnable_input_scale
         self.project_weight_dim = project_weight_dim
@@ -610,7 +749,8 @@ class AgentNetworks(nn.Module):
             self.actor_mean, self.critic = self.build_network(env, num_hidden, layer_norm, layer_norm_no_params,
                                                               add_diag_layer, activation,
                                                               weight_init, init_gain, parseval_reg, input_scale,
-                                                              learnable_input_scale, project_weight_dim,
+                                                              learnable_input_scale, lie_group, oft, poet,
+                                                              oet_num_blocks, poet_exact_cayley, project_weight_dim,
                                                               discrete_action_space)
             
         output_size = env.action_space.n if discrete_action_space else np.prod(env.action_space.shape)
@@ -665,7 +805,7 @@ class AgentNetworks(nn.Module):
 
     def build_network(self, env, num_hidden, layer_norm, layer_norm_no_params, add_diag_layer,
                       activation, weight_init, init_gain, parseval_reg, input_scale, learnable_input_scale,
-                      project_weight_dim, discrete_action_space):
+                      lie_group, oft, poet, oet_num_blocks, poet_exact_cayley, project_weight_dim, discrete_action_space):
         ''' '''
         if activation == 'tanh':
             activation_fn = nn.Tanh()
@@ -694,10 +834,21 @@ class AgentNetworks(nn.Module):
             layer_init = orthogonal_layer_init
         elif weight_init == 'xavier':
             layer_init = xavier_layer_init
+        elif weight_init == 'ones':
+            layer_init = ones_layer_init
         else:
             raise AssertionError('weight_init is invalid:', weight_init)
 
         layer_name = 'linear_orthog' if parseval_reg > 0 else 'linear'
+
+        def hidden_linear(in_features, out_features):
+            if lie_group:
+                return StiefelLinear(in_features, out_features, bias=True)
+            if poet:
+                return PoetOfficialLinear(in_features, out_features, bias=True, exact_cayley=poet_exact_cayley)
+            if oft:
+                return OETLinear(in_features, out_features, two_sided=False, bias=True, num_blocks=oet_num_blocks)
+            return layer_init(nn.Linear(in_features, out_features), gain=init_gain)
 
         if activation == 'crelu':
             assert num_hidden % 2 == 0
@@ -710,20 +861,20 @@ class AgentNetworks(nn.Module):
         if layer_norm:
             critic = nn.Sequential(OrderedDict([
                 ('input_scale', ScaleLayer(input_scale, learnable_input_scale)),
-                (f'{layer_name}_1', layer_init(nn.Linear(np.array(env.observation_space.shape).prod(), num_hidden_out), gain=init_gain)),
+                (f'{layer_name}_1', hidden_linear(np.array(env.observation_space.shape).prod(), num_hidden_out)),
                 ('layernorm_1', nn.LayerNorm(num_hidden_out, elementwise_affine=not layer_norm_no_params)),
                 (f'{activation}_1', activation_fn),
-                (f'{layer_name}_2', layer_init(nn.Linear(num_hidden, num_hidden_out), gain=init_gain)),
+                (f'{layer_name}_2', hidden_linear(num_hidden, num_hidden_out)),
                 ('layernorm_2', nn.LayerNorm(num_hidden_out, elementwise_affine=not layer_norm_no_params)),
                 (f'{activation}_2',activation_fn),
                 ('linear_output', layer_init(nn.Linear(num_hidden, 1), gain=1.0)),
             ]))
             actor_mean = nn.Sequential(OrderedDict( [
                 ('input_scale', ScaleLayer(input_scale, learnable_input_scale)),
-                (f'{layer_name}_1', layer_init(nn.Linear(np.array(env.observation_space.shape).prod(), num_hidden_out), gain=init_gain)),
+                (f'{layer_name}_1', hidden_linear(np.array(env.observation_space.shape).prod(), num_hidden_out)),
                 ('layernorm_1', nn.LayerNorm(num_hidden_out, elementwise_affine=not layer_norm_no_params)),
                 (f'{activation}_1', activation_fn),
-                (f'{layer_name}_2', layer_init(nn.Linear(num_hidden, num_hidden_out), gain=init_gain)),
+                (f'{layer_name}_2', hidden_linear(num_hidden, num_hidden_out)),
                 ('layernorm_2', nn.LayerNorm(num_hidden_out, elementwise_affine=not layer_norm_no_params)),
                 (f'{activation}_2',activation_fn),
                 ('linear_output', layer_init(nn.Linear(num_hidden, actor_output_dim), gain=0.01)),
@@ -731,20 +882,20 @@ class AgentNetworks(nn.Module):
         elif add_diag_layer:
             critic = nn.Sequential(OrderedDict( [
                 ('input_scale', ScaleLayer(input_scale, learnable_input_scale)),
-                (f'{layer_name}_1', layer_init(nn.Linear(np.array(env.observation_space.shape).prod(), num_hidden_out), gain=init_gain)),
+                (f'{layer_name}_1', hidden_linear(np.array(env.observation_space.shape).prod(), num_hidden_out)),
                 ('diag_1', DiagLinear(num_hidden_out)),
                 (f'{activation}_1', activation_fn),
-                (f'{layer_name}_2', layer_init(nn.Linear(num_hidden, num_hidden_out), gain=init_gain)),
+                (f'{layer_name}_2', hidden_linear(num_hidden, num_hidden_out)),
                 ('diag_2', DiagLinear(num_hidden_out)),
                 (f'{activation}_2',activation_fn),
                 ('linear_output', layer_init(nn.Linear(num_hidden, 1), gain=1.0)),
             ]))
             actor_mean = nn.Sequential(OrderedDict( [
                 ('input_scale', ScaleLayer(input_scale)),
-                (f'{layer_name}_1', layer_init(nn.Linear(np.array(env.observation_space.shape).prod(), num_hidden_out), gain=init_gain)),
+                (f'{layer_name}_1', hidden_linear(np.array(env.observation_space.shape).prod(), num_hidden_out)),
                 ('diag_1', DiagLinear(num_hidden_out)),
                 (f'{activation}_1', activation_fn),
-                (f'{layer_name}_2', layer_init(nn.Linear(num_hidden, num_hidden_out), gain=init_gain)),
+                (f'{layer_name}_2', hidden_linear(num_hidden, num_hidden_out)),
                 ('diag_2', DiagLinear(num_hidden_out)),
                 (f'{activation}_2',activation_fn),
                 ('linear_output', layer_init(nn.Linear(num_hidden, actor_output_dim), gain=0.01)),
@@ -752,17 +903,17 @@ class AgentNetworks(nn.Module):
         else:
             critic = nn.Sequential(OrderedDict( [
                 ('input_scale', ScaleLayer(input_scale, learnable_input_scale)),
-                (f'{layer_name}_1', layer_init(nn.Linear(np.array(env.observation_space.shape).prod(), num_hidden_out), gain=init_gain)),
+                (f'{layer_name}_1', hidden_linear(np.array(env.observation_space.shape).prod(), num_hidden_out)),
                 (f'{activation}_1', activation_fn),
-                (f'{layer_name}_2', layer_init(nn.Linear(num_hidden, num_hidden_out), gain=init_gain)),
+                (f'{layer_name}_2', hidden_linear(num_hidden, num_hidden_out)),
                 (f'{activation}_2', activation_fn),
                 ('linear_output', layer_init(nn.Linear(num_hidden, 1), gain=1.0)),
             ]))
             actor_mean = nn.Sequential(OrderedDict( [
                 ('input_scale', ScaleLayer(input_scale, learnable_input_scale)),
-                (f'{layer_name}_1', layer_init(nn.Linear(np.array(env.observation_space.shape).prod(), num_hidden_out), gain=init_gain)),
+                (f'{layer_name}_1', hidden_linear(np.array(env.observation_space.shape).prod(), num_hidden_out)),
                 (f'{activation}_1', activation_fn),
-                (f'{layer_name}_2', layer_init(nn.Linear(num_hidden, num_hidden_out), gain=init_gain)),
+                (f'{layer_name}_2', hidden_linear(num_hidden, num_hidden_out)),
                 (f'{activation}_2', activation_fn),
                 ('linear_output', layer_init(nn.Linear(num_hidden, actor_output_dim), gain=0.01)),
             ]))

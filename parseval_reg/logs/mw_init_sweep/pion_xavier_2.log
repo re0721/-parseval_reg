@@ -1,0 +1,51 @@
+D:\anaconda\envs\parseval\lib\site-packages\gymnasium\spaces\box.py:231: UserWarning: [33mWARN: Box low's precision lowered by casting to float32, current low.dtype=float64[0m
+  gym.logger.warn(
+D:\anaconda\envs\parseval\lib\site-packages\gymnasium\spaces\box.py:297: UserWarning: [33mWARN: Box high's precision lowered by casting to float32, current high.dtype=float64[0m
+  gym.logger.warn(
+D:\anaconda\envs\parseval\lib\site-packages\gymnasium\spaces\box.py:231: UserWarning: [33mWARN: Box low's precision lowered by casting to float32, current low.dtype=float64[0m
+  gym.logger.warn(
+D:\anaconda\envs\parseval\lib\site-packages\gymnasium\spaces\box.py:297: UserWarning: [33mWARN: Box high's precision lowered by casting to float32, current high.dtype=float64[0m
+  gym.logger.warn(
+agent_dict keys dict_keys(['base_algorithm', 'learning_rate', 'num_envs', 'rollout_num_steps', 'gamma', 'gae_lambda', 'num_minibatches', 'update_epochs', 'minibatch_size', 'norm_adv', 'clip_coef', 'clip_vloss', 'ent_coef', 'vf_coef', 'max_grad_norm', 'rpo_alpha', 'parseval_reg', 'input_scale', 'learnable_input_scale', 'add_diag_layer', 'lie_group', 'pion', 'pion_block_size', 'pion_multiplicative', 'oft', 'poet', 'oet_num_blocks', 'poet_exact_cayley', 'layer_norm', 'layer_norm_no_params', 'weight_decay', 'tuned_adam', 'perturb', 'perturb_dist', 'regen', 'regen_wasserstein', 'weight_init', 'net_width', 'net_activation', 'init_gain', 'parseval_norm', 'parseval_num_groups'])
+env_dict keys dict_keys(['env', 'change_freq', 'seed', 'env_sequence', 'env_type'])
+Start RL run!
+{'base_algorithm': 'ppo_agent', 'learning_rate': 0.002, 'num_envs': 1, 'rollout_num_steps': 2048, 'gamma': 0.99, 'gae_lambda': 0.95, 'num_minibatches': 32, 'update_epochs': 10, 'minibatch_size': 64, 'norm_adv': True, 'clip_coef': 0.2, 'clip_vloss': True, 'ent_coef': 0.0, 'vf_coef': 0.5, 'max_grad_norm': 0.5, 'rpo_alpha': 0.5, 'parseval_reg': 0, 'input_scale': 1, 'learnable_input_scale': False, 'add_diag_layer': False, 'lie_group': False, 'pion': True, 'pion_block_size': None, 'pion_multiplicative': False, 'oft': False, 'poet': False, 'oet_num_blocks': 1, 'poet_exact_cayley': False, 'layer_norm': False, 'layer_norm_no_params': False, 'weight_decay': 0, 'tuned_adam': False, 'perturb': 0.0, 'perturb_dist': 'xavier', 'regen': 0.0, 'regen_wasserstein': False, 'weight_init': 'xavier', 'net_width': 64, 'net_activation': 'tanh', 'init_gain': None, 'parseval_norm': False, 'parseval_num_groups': 1, 'device': 'cpu'}
+{'env': 'metaworld_sequence_set0', 'change_freq': 1000000.0, 'seed': 125, 'env_sequence': 'set0', 'env_type': 'rl', 'local_run': False}
+Running on gpu: False
+TASK 1  225 reach-v3
+time:  0.033 SPS: 0
+0 success 0.0 +/- 0.0
+0 eval return 258.705 +/- 20.736
+time:  0.697 SPS: 597
+24999 success 0.7 +/- 0.153
+24999 eval return 1133.59 +/- 39.279
+time:  1.467 SPS: 567
+49999 success 0.6 +/- 0.163
+49999 eval return 1097.808 +/- 152.928
+time:  2.202 SPS: 567
+74999 success 1.0 +/- 0.0
+74999 eval return 1695.771 +/- 32.829
+time:  2.968 SPS: 561
+99999 success 1.0 +/- 0.0
+99999 eval return 1767.583 +/- 13.743
+time:  3.771 SPS: 552
+124999 success 1.0 +/- 0.0
+124999 eval return 1706.435 +/- 19.248
+time:  4.511 SPS: 554
+149999 success 1.0 +/- 0.0
+149999 eval return 1646.128 +/- 45.992
+time:  5.295 SPS: 550
+174999 success 1.0 +/- 0.0
+174999 eval return 1669.914 +/- 32.49
+time:  6.05 SPS: 550
+199999 success 1.0 +/- 0.0
+199999 eval return 1765.688 +/- 14.981
+time:  6.824 SPS: 549
+224999 success 1.0 +/- 0.0
+224999 eval return 1713.835 +/- 35.093
+time:  7.589 SPS: 549
+249999 success 1.0 +/- 0.0
+249999 eval return 1799.21 +/- 13.539
+time:  8.358 SPS: 548
+274999 success 1.0 +/- 0.0
+274999 eval return 1813.984 +/- 12.909

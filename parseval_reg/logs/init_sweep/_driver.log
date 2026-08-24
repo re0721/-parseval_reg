@@ -1,0 +1,7 @@
+  -> pion init=xavier seed_idx=0
+  -> pion init=xavier seed_idx=1
+  -> pion init=ones seed_idx=0
+  -> pion init=ones seed_idx=1
+
+已启动 4 个进程（16 万步 / 4 任务）
+=== 初始化扫描跑完 ===

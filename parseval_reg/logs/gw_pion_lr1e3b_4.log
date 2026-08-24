@@ -1,0 +1,79 @@
+agent_dict keys dict_keys(['base_algorithm', 'learning_rate', 'num_envs', 'rollout_num_steps', 'gamma', 'gae_lambda', 'num_minibatches', 'update_epochs', 'minibatch_size', 'norm_adv', 'clip_coef', 'clip_vloss', 'ent_coef', 'vf_coef', 'max_grad_norm', 'rpo_alpha', 'parseval_reg', 'input_scale', 'learnable_input_scale', 'add_diag_layer', 'lie_group', 'pion', 'layer_norm', 'layer_norm_no_params', 'weight_decay', 'tuned_adam', 'perturb', 'perturb_dist', 'regen', 'regen_wasserstein', 'weight_init', 'net_width', 'net_activation', 'init_gain', 'parseval_norm', 'parseval_num_groups'])
+env_dict keys dict_keys(['env', 'change_freq', 'seed', 'env_type'])
+Start RL run!
+{'base_algorithm': 'ppo_agent', 'learning_rate': 0.001, 'num_envs': 1, 'rollout_num_steps': 128, 'gamma': 0.99, 'gae_lambda': 0.95, 'num_minibatches': 4, 'update_epochs': 4, 'minibatch_size': 32, 'norm_adv': True, 'clip_coef': 0.2, 'clip_vloss': True, 'ent_coef': 0.01, 'vf_coef': 0.5, 'max_grad_norm': 0.5, 'rpo_alpha': 0, 'parseval_reg': 0, 'input_scale': 1, 'learnable_input_scale': False, 'add_diag_layer': False, 'lie_group': False, 'pion': True, 'layer_norm': False, 'layer_norm_no_params': False, 'weight_decay': 0, 'tuned_adam': False, 'perturb': 0.0, 'perturb_dist': 'xavier', 'regen': 0.0, 'regen_wasserstein': False, 'weight_init': 'xavier', 'net_width': 64, 'net_activation': 'tanh', 'init_gain': None, 'parseval_norm': False, 'parseval_num_groups': 1, 'device': 'cpu'}
+{'env': 'gridworld_ninerooms', 'change_freq': 40000, 'seed': 127, 'env_type': 'rl', 'local_run': False}
+Running on gpu: False
+Gridworld args () {'env': 'gridworld_ninerooms', 'change_freq': 40000, 'seed': 127, 'env_type': 'rl', 'local_run': False}
+time:  0.065 SPS: 0
+0 success 0.0 +/- 0.0
+0 eval steps mean 99.9 best 99 optimal 7
+0 eval return -16.3 +/- 0.341
+time:  0.632 SPS: 131
+4999 success 0.0 +/- 0.0
+4999 eval steps mean 99.9 best 99 optimal 7
+4999 eval return -13.087 +/- 0.612
+time:  1.953 SPS: 85
+9999 success 0.6 +/- 0.163
+9999 eval steps mean 72.2 best 28 optimal 7
+9999 eval return -4.953 +/- 1.318
+time:  3.483 SPS: 71
+14999 success 0.6 +/- 0.163
+14999 eval steps mean 59.3 best 22 optimal 7
+14999 eval return -4.718 +/- 2.112
+time:  5.131 SPS: 64
+19999 success 1.0 +/- 0.0
+19999 eval steps mean 21.9 best 18 optimal 7
+19999 eval return 0.941 +/- 0.253
+time:  7.367 SPS: 56
+24999 success 1.0 +/- 0.0
+24999 eval steps mean 19.6 best 18 optimal 7
+24999 eval return 1.404 +/- 0.023
+time:  10.612 SPS: 47
+29999 success 1.0 +/- 0.0
+29999 eval steps mean 21.5 best 17 optimal 7
+29999 eval return 1.34 +/- 0.096
+time:  13.636 SPS: 42
+34999 success 0.9 +/- 0.1
+34999 eval steps mean 26.5 best 17 optimal 7
+34999 eval return 0.094 +/- 1.357
+40000
+GOAL [9 3]
+time:  16.49 SPS: 40
+39999 success 0.0 +/- 0.0
+39999 eval steps mean 99.9 best 99 optimal 6
+39999 eval return -5.214 +/- 0.037
+time:  20.963 SPS: 35
+44999 success 0.0 +/- 0.0
+44999 eval steps mean 99.9 best 99 optimal 6
+44999 eval return -3.33 +/- 0.018
+time:  25.174 SPS: 33
+49999 success 0.0 +/- 0.0
+49999 eval steps mean 99.9 best 99 optimal 6
+49999 eval return -3.621 +/- 0.173
+time:  28.056 SPS: 32
+54999 success 1.0 +/- 0.0
+54999 eval steps mean 27.6 best 19 optimal 6
+54999 eval return 0.827 +/- 0.504
+time:  29.967 SPS: 33
+59999 success 1.0 +/- 0.0
+59999 eval steps mean 15.3 best 14 optimal 6
+59999 eval return 1.934 +/- 0.013
+time:  33.438 SPS: 32
+64999 success 1.0 +/- 0.0
+64999 eval steps mean 15.1 best 14 optimal 6
+64999 eval return 1.941 +/- 0.009
+time:  37.325 SPS: 31
+69999 success 1.0 +/- 0.0
+69999 eval steps mean 14.9 best 14 optimal 6
+69999 eval return 1.95 +/- 0.0
+time:  41.264 SPS: 30
+74999 success 1.0 +/- 0.0
+74999 eval steps mean 15.0 best 14 optimal 6
+74999 eval return 1.942 +/- 0.008
+80000
+GOAL [6 4]
+time:  45.125 SPS: 29
+79999 success 0.4 +/- 0.163
+79999 eval steps mean 69.3 best 20 optimal 4
+79999 eval return -4.123 +/- 1.598

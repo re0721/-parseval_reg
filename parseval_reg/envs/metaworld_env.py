@@ -6,14 +6,14 @@
 #####
 
 import metaworld
-from metaworld.envs import ALL_V2_ENVIRONMENTS_GOAL_OBSERVABLE, ALL_V2_ENVIRONMENTS_GOAL_HIDDEN
+from metaworld.env_dict import ALL_V3_ENVIRONMENTS_GOAL_OBSERVABLE, ALL_V3_ENVIRONMENTS_GOAL_HIDDEN
 
 
 from typing import Callable, Dict, List
 import gymnasium as gym
 from gymnasium.wrappers import DtypeObservation, TimeLimit, RecordEpisodeStatistics, RecordVideo, ClipAction
 import numpy as np
-from .metaworld_env_sequences import GOOD_RPO_SEQS, RPO20_SEQ, RPO10_SEQ
+from .metaworld_env_sequences import GOOD_RPO_SEQS, RPO20_SEQ, RPO10_SEQ, SHUFFLED_SET0_SEQ
 
 
 version = 2
@@ -21,14 +21,14 @@ version = 2
 EnvFn = Callable[[], gym.Env]
 
 # these envs are learned by PPO within 2M steps each.
-GOOD_ENVS = ['handle-press-side-v2', 'faucet-close-v2', 'plate-slide-v2', 'window-open-v2',
-             'reach-wall-v2', 'button-press-v2', 'plate-slide-side-v2', 'handle-press-v2']
+GOOD_ENVS = ['handle-press-side-v3', 'faucet-close-v3', 'plate-slide-v3', 'window-open-v3',
+             'reach-wall-v3', 'button-press-v3', 'plate-slide-side-v3', 'handle-press-v3']
 # window-open seems really hard in the sequential setup
 
-# SMALL_SEQUENCE_ENVS = ['plate-slide-v2', 'handle-press-v2', 'button-press-v2', 'faucet-close-v2',
-#                        'plate-slide-side-v2', 'handle-press-side-v2']
+# SMALL_SEQUENCE_ENVS = ['plate-slide-v3', 'handle-press-v3', 'button-press-v3', 'faucet-close-v3',
+#                        'plate-slide-side-v3', 'handle-press-side-v3']
 
-SMALL_SEQUENCE_ENVS = ['handle-press-v2', 'plate-slide-side-v2', 'button-press-v2', 'plate-slide-v2', 'handle-press-side-v2', 'faucet-close-v2']
+SMALL_SEQUENCE_ENVS = ['handle-press-v3', 'plate-slide-side-v3', 'button-press-v3', 'plate-slide-v3', 'handle-press-side-v3', 'faucet-close-v3']
 class MetaWorldSingleEnvSequence:
     def __init__(self,  change_freq=1e7, base_task_name=None, env_sequence="metaworld_sequence_set1", goal_hidden=True, normalize_obs="straight", normalize_avg_coef=0.0001,
                  normalize_rewards=True, reset_obs_stats=False,
@@ -37,7 +37,7 @@ class MetaWorldSingleEnvSequence:
         '''
         This class is used to generate a stream of tasks in one of the metaworld envs
         Each task is generated with a new random seed. (I think you can go on forever?)
-        base_task_name: name of metaworld env e.g. 'reach-v2'
+        base_task_name: name of metaworld env e.g. 'reach-v3'
         change_freq: number of steps until a task change
         env_sequence: String that specifies which env sequence to use
         normalize_obs: If True, keeps a moving average of observations and normalizes the observations
@@ -51,7 +51,7 @@ class MetaWorldSingleEnvSequence:
         self.env_sequence = env_sequence
 
         self.goal_str = '-goal-hidden' if goal_hidden else '-goal-observable'
-        self.metaworld_envs = ALL_V2_ENVIRONMENTS_GOAL_HIDDEN if goal_hidden else ALL_V2_ENVIRONMENTS_GOAL_OBSERVABLE
+        self.metaworld_envs = ALL_V3_ENVIRONMENTS_GOAL_HIDDEN if goal_hidden else ALL_V3_ENVIRONMENTS_GOAL_OBSERVABLE
         if base_task_name is not None:
             self.base_task_class = self.metaworld_envs[base_task_name + self.goal_str]
 
@@ -96,11 +96,15 @@ class MetaWorldSingleEnvSequence:
         self.task_counter += 1
 
         if self.env_sequence is not None:
-            if self.env_sequence[-2:].isnumeric(): # we expect something like "set15" or "set3"
-                env_set_id = int(self.env_sequence[-2:])
+            if self.env_sequence == 'shuffle':
+                # order-robustness check: same 10 tasks as set0, only shuffled
+                self.base_task_name = SHUFFLED_SET0_SEQ[(self.task_counter-1) % len(SHUFFLED_SET0_SEQ)]
             else:
-                env_set_id = int(self.env_sequence[-1])
-            self.base_task_name = RPO10_SEQ[env_set_id-1][(self.task_counter-1) % len(RPO10_SEQ[0])]
+                if self.env_sequence[-2:].isnumeric(): # we expect something like "set15" or "set3"
+                    env_set_id = int(self.env_sequence[-2:])
+                else:
+                    env_set_id = int(self.env_sequence[-1])
+                self.base_task_name = RPO10_SEQ[env_set_id-1][(self.task_counter-1) % len(RPO10_SEQ[0])]
             # self.base_task_name = SEQUENCE_ENVS[(self.task_counter-1) % len(SMALL_SEQUENCE_ENVS)]  # for testing
             self.base_task_class = self.metaworld_envs[self.base_task_name + self.goal_str]
 
@@ -295,7 +299,7 @@ if __name__ == '__main__':
     ...
 
     np.set_printoptions(suppress=True)
-    env = MetaWorldSingleEnvSequence(1000,'reach-v2', seed=123,
+    env = MetaWorldSingleEnvSequence(1000,'reach-v3', seed=123,
                                      obs_drift_std=0.0, obs_noise_std=0.01, normalize_obs=False)
     obs, _ = env.reset()
 

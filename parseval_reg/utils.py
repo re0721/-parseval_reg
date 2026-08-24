@@ -80,7 +80,7 @@ class DiagLinear(nn.Module):
         torch.nn.init.constant_(self.bias, 0)
 
     def forward(self, input: Tensor) -> Tensor:
-        return input * self.weight.unsqueeze(0) + self.bias.unsqueeze(0)
+        return input * self.weight + self.bias
 
     def extra_repr(self) -> str:
         return f'in_features={self.in_features}, out_features={self.out_features}, bias={self.bias is not None}'

@@ -1,0 +1,27 @@
+  -> poet lr=0.0005 seed_idx=0
+  -> poet lr=0.0005 seed_idx=1
+  -> poet lr=0.0005 seed_idx=2
+  -> poet lr=0.0005 seed_idx=3
+  -> poet lr=0.0005 seed_idx=4
+  -> poet lr=0.0005 seed_idx=5
+  -> oft lr=0.003 seed_idx=0
+  -> oft lr=0.003 seed_idx=1
+  -> oft lr=0.003 seed_idx=2
+  -> oft lr=0.003 seed_idx=3
+  -> oft lr=0.003 seed_idx=4
+  -> oft lr=0.003 seed_idx=5
+  -> poet_exact lr=0.01 seed_idx=0
+  -> poet_exact lr=0.01 seed_idx=1
+  -> poet_exact lr=0.01 seed_idx=2
+  -> poet_exact lr=0.01 seed_idx=3
+  -> poet_exact lr=0.01 seed_idx=4
+  -> poet_exact lr=0.01 seed_idx=5
+  -> poet_exact lr=0.0005 seed_idx=0
+  -> poet_exact lr=0.0005 seed_idx=1
+  -> poet_exact lr=0.0005 seed_idx=2
+  -> poet_exact lr=0.0005 seed_idx=3
+  -> poet_exact lr=0.0005 seed_idx=4
+  -> poet_exact lr=0.0005 seed_idx=5
+
+已启动 24 个进程（80 万步，预计 1-1.5 小时）
+=== 全量实验跑完 ===

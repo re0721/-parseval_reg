@@ -1,0 +1,9 @@
+  -> poet_exact lr=0.0006 seed_idx=0
+  -> poet_exact lr=0.0006 seed_idx=1
+  -> poet_exact lr=0.0006 seed_idx=2
+  -> poet_exact lr=0.0006 seed_idx=3
+  -> poet_exact lr=0.0006 seed_idx=4
+  -> poet_exact lr=0.0006 seed_idx=5
+
+已启动 6 个 POET-exact 进程
+=== POET-exact 10 任务跑完 ===

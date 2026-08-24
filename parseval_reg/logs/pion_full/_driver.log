@@ -1,0 +1,15 @@
+  -> pion seed_idx=0
+  -> pion seed_idx=1
+  -> pion seed_idx=2
+  -> pion seed_idx=3
+  -> pion seed_idx=4
+  -> pion seed_idx=5
+  -> pion_mult seed_idx=0
+  -> pion_mult seed_idx=1
+  -> pion_mult seed_idx=2
+  -> pion_mult seed_idx=3
+  -> pion_mult seed_idx=4
+  -> pion_mult seed_idx=5
+
+已启动 12 个进程
+=== Pion 全量跑完 ===

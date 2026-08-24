@@ -1,0 +1,18 @@
+=== POET (Neumann 截断) lr 扫描 ===
+  -> poet lr=0.0005 seed_idx=0  (logs/probe/poet_lr5e4_0.log)
+  -> poet lr=0.0005 seed_idx=1  (logs/probe/poet_lr5e4_1.log)
+  -> poet lr=0.001 seed_idx=0  (logs/probe/poet_lr1e3_0.log)
+  -> poet lr=0.001 seed_idx=1  (logs/probe/poet_lr1e3_1.log)
+  -> poet lr=0.003 seed_idx=0  (logs/probe/poet_lr3e3_0.log)
+  -> poet lr=0.003 seed_idx=1  (logs/probe/poet_lr3e3_1.log)
+=== OFT (精确 Cayley) lr 扫描 ===
+  -> oft lr=0.003 seed_idx=0  (logs/probe/oft_lr3e3_0.log)
+  -> oft lr=0.003 seed_idx=1  (logs/probe/oft_lr3e3_1.log)
+  -> oft lr=0.01 seed_idx=0  (logs/probe/oft_lr1e2_0.log)
+  -> oft lr=0.01 seed_idx=1  (logs/probe/oft_lr1e2_1.log)
+=== POET-exact 对照组（大 lr 下是否存活）===
+  -> poet_exact lr=0.01 seed_idx=0  (logs/probe/poet_exact_lr1e2_0.log)
+  -> poet_exact lr=0.01 seed_idx=1  (logs/probe/poet_exact_lr1e2_1.log)
+
+已启动 12 个进程，等待全部完成...
+=== 探针全部跑完 ===

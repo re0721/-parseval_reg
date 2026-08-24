@@ -1,0 +1,624 @@
+D:\anaconda\envs\parseval\lib\site-packages\gymnasium\spaces\box.py:231: UserWarning: [33mWARN: Box low's precision lowered by casting to float32, current low.dtype=float64[0m
+  gym.logger.warn(
+D:\anaconda\envs\parseval\lib\site-packages\gymnasium\spaces\box.py:297: UserWarning: [33mWARN: Box high's precision lowered by casting to float32, current high.dtype=float64[0m
+  gym.logger.warn(
+D:\anaconda\envs\parseval\lib\site-packages\gymnasium\spaces\box.py:231: UserWarning: [33mWARN: Box low's precision lowered by casting to float32, current low.dtype=float64[0m
+  gym.logger.warn(
+D:\anaconda\envs\parseval\lib\site-packages\gymnasium\spaces\box.py:297: UserWarning: [33mWARN: Box high's precision lowered by casting to float32, current high.dtype=float64[0m
+  gym.logger.warn(
+agent_dict keys dict_keys(['base_algorithm', 'learning_rate', 'num_envs', 'rollout_num_steps', 'gamma', 'gae_lambda', 'num_minibatches', 'update_epochs', 'minibatch_size', 'norm_adv', 'clip_coef', 'clip_vloss', 'ent_coef', 'vf_coef', 'max_grad_norm', 'parseval_reg', 'layer_norm', 'layer_norm_no_params', 'weight_decay', 'tuned_adam', 'perturb', 'perturb_dist', 'weight_init', 'net_width', 'net_activation', 'init_gain', 'parseval_num_groups'])
+env_dict keys dict_keys(['env', 'change_freq', 'seed', 'env_sequence', 'env_type'])
+Start RL run!
+{'base_algorithm': 'ppo_agent', 'learning_rate': 0.0003, 'num_envs': 1, 'rollout_num_steps': 2048, 'gamma': 0.99, 'gae_lambda': 0.95, 'num_minibatches': 32, 'update_epochs': 10, 'minibatch_size': 64, 'norm_adv': True, 'clip_coef': 0.2, 'clip_vloss': True, 'ent_coef': 0.0, 'vf_coef': 0.5, 'max_grad_norm': 0.5, 'parseval_reg': 0.001, 'layer_norm': False, 'layer_norm_no_params': False, 'weight_decay': 0, 'tuned_adam': False, 'perturb': 0.0, 'perturb_dist': 'xavier', 'weight_init': 'orthogonal', 'net_width': 64, 'net_activation': 'tanh', 'init_gain': None, 'parseval_num_groups': 1, 'device': 'cpu'}
+{'env': 'metaworld_sequence_set0', 'change_freq': 1000000.0, 'seed': 128, 'env_sequence': 'set0', 'env_type': 'rl', 'local_run': False}
+Running on gpu: False
+TASK 1  228 reach-v3
+time:  0.085 SPS: 0
+0 success 0.0 +/- 0.0
+0 eval return 267.531 +/- 22.089
+time:  1.249 SPS: 333
+24999 success 1.0 +/- 0.0
+24999 eval return 1692.898 +/- 17.818
+time:  2.317 SPS: 359
+49999 success 1.0 +/- 0.0
+49999 eval return 1818.056 +/- 6.007
+time:  3.451 SPS: 362
+74999 success 1.0 +/- 0.0
+74999 eval return 1796.614 +/- 8.874
+time:  4.567 SPS: 364
+99999 success 0.9 +/- 0.1
+99999 eval return 1745.733 +/- 14.167
+time:  6.074 SPS: 342
+124999 success 0.9 +/- 0.1
+124999 eval return 1791.587 +/- 7.098
+time:  7.232 SPS: 345
+149999 success 1.0 +/- 0.0
+149999 eval return 1829.486 +/- 4.585
+time:  8.268 SPS: 352
+174999 success 1.0 +/- 0.0
+174999 eval return 1858.935 +/- 3.965
+time:  9.129 SPS: 365
+199999 success 1.0 +/- 0.0
+199999 eval return 1815.564 +/- 8.599
+time:  9.972 SPS: 376
+224999 success 1.0 +/- 0.0
+224999 eval return 1846.957 +/- 8.019
+time:  10.835 SPS: 384
+249999 success 1.0 +/- 0.0
+249999 eval return 1852.71 +/- 7.619
+time:  11.671 SPS: 392
+274999 success 1.0 +/- 0.0
+274999 eval return 1858.619 +/- 3.617
+time:  12.503 SPS: 399
+299999 success 1.0 +/- 0.0
+299999 eval return 1853.389 +/- 3.227
+time:  13.344 SPS: 405
+324999 success 0.9 +/- 0.1
+324999 eval return 1678.966 +/- 41.476
+time:  14.227 SPS: 410
+349999 success 1.0 +/- 0.0
+349999 eval return 1804.491 +/- 19.144
+time:  15.104 SPS: 413
+374999 success 0.9 +/- 0.1
+374999 eval return 1760.937 +/- 17.062
+time:  15.945 SPS: 418
+399999 success 0.7 +/- 0.153
+399999 eval return 1679.318 +/- 51.596
+time:  16.777 SPS: 422
+424999 success 0.4 +/- 0.163
+424999 eval return 1411.995 +/- 34.698
+time:  17.604 SPS: 426
+449999 success 0.8 +/- 0.133
+449999 eval return 1651.348 +/- 7.183
+time:  18.437 SPS: 429
+474999 success 0.8 +/- 0.133
+474999 eval return 1785.385 +/- 6.758
+time:  19.299 SPS: 431
+499999 success 1.0 +/- 0.0
+499999 eval return 1821.756 +/- 10.395
+time:  20.13 SPS: 434
+524999 success 1.0 +/- 0.0
+524999 eval return 1844.742 +/- 5.038
+time:  20.957 SPS: 437
+549999 success 1.0 +/- 0.0
+549999 eval return 1817.684 +/- 6.948
+time:  21.789 SPS: 439
+574999 success 1.0 +/- 0.0
+574999 eval return 1814.635 +/- 9.57
+time:  22.616 SPS: 442
+599999 success 1.0 +/- 0.0
+599999 eval return 1831.288 +/- 8.131
+time:  23.463 SPS: 443
+624999 success 1.0 +/- 0.0
+624999 eval return 1819.137 +/- 9.048
+time:  24.298 SPS: 445
+649999 success 1.0 +/- 0.0
+649999 eval return 1828.253 +/- 8.302
+time:  25.124 SPS: 447
+674999 success 1.0 +/- 0.0
+674999 eval return 1844.62 +/- 7.352
+time:  25.937 SPS: 449
+699999 success 1.0 +/- 0.0
+699999 eval return 1786.546 +/- 13.793
+time:  26.792 SPS: 450
+724999 success 1.0 +/- 0.0
+724999 eval return 1777.646 +/- 8.953
+time:  27.616 SPS: 452
+749999 success 1.0 +/- 0.0
+749999 eval return 1769.048 +/- 9.552
+time:  28.428 SPS: 454
+774999 success 0.9 +/- 0.1
+774999 eval return 1785.081 +/- 7.892
+time:  29.235 SPS: 456
+799999 success 1.0 +/- 0.0
+799999 eval return 1736.201 +/- 20.999
+time:  30.052 SPS: 457
+824999 success 0.9 +/- 0.1
+824999 eval return 1608.255 +/- 30.118
+time:  30.915 SPS: 458
+849999 success 1.0 +/- 0.0
+849999 eval return 1780.727 +/- 10.343
+time:  31.739 SPS: 459
+874999 success 1.0 +/- 0.0
+874999 eval return 1735.183 +/- 28.177
+time:  32.556 SPS: 460
+899999 success 1.0 +/- 0.0
+899999 eval return 1744.308 +/- 18.327
+time:  33.37 SPS: 461
+924999 success 1.0 +/- 0.0
+924999 eval return 1807.585 +/- 9.37
+time:  34.193 SPS: 463
+949999 success 1.0 +/- 0.0
+949999 eval return 1822.45 +/- 13.718
+time:  35.05 SPS: 463
+974999 success 1.0 +/- 0.0
+974999 eval return 1835.937 +/- 5.882
+TASK 2  328 button-press-v3
+time:  35.861 SPS: 464
+999999 success 0.3 +/- 0.153
+999999 eval return 129.21 +/- 4.842
+time:  36.632 SPS: 466
+1024999 success 0.1 +/- 0.1
+1024999 eval return 121.503 +/- 12.693
+time:  37.484 SPS: 466
+1049999 success 0.4 +/- 0.163
+1049999 eval return 248.34 +/- 4.221
+time:  38.322 SPS: 467
+1074999 success 0.9 +/- 0.1
+1074999 eval return 497.283 +/- 112.132
+time:  39.175 SPS: 467
+1099999 success 0.7 +/- 0.153
+1099999 eval return 1094.469 +/- 65.578
+time:  40.001 SPS: 468
+1124999 success 0.9 +/- 0.1
+1124999 eval return 1208.387 +/- 84.362
+time:  40.814 SPS: 469
+1149999 success 0.9 +/- 0.1
+1149999 eval return 1261.36 +/- 91.252
+time:  41.615 SPS: 470
+1174999 success 1.0 +/- 0.0
+1174999 eval return 1323.737 +/- 67.979
+time:  42.446 SPS: 471
+1199999 success 1.0 +/- 0.0
+1199999 eval return 1305.453 +/- 59.941
+time:  43.306 SPS: 471
+1224999 success 1.0 +/- 0.0
+1224999 eval return 1247.768 +/- 102.04
+time:  44.133 SPS: 472
+1249999 success 1.0 +/- 0.0
+1249999 eval return 1248.311 +/- 119.442
+time:  44.956 SPS: 472
+1274999 success 1.0 +/- 0.0
+1274999 eval return 1251.913 +/- 125.963
+time:  45.77 SPS: 473
+1299999 success 1.0 +/- 0.0
+1299999 eval return 1349.463 +/- 67.906
+time:  46.597 SPS: 473
+1324999 success 1.0 +/- 0.0
+1324999 eval return 1192.866 +/- 96.385
+time:  47.451 SPS: 474
+1349999 success 0.9 +/- 0.1
+1349999 eval return 1215.722 +/- 94.057
+time:  48.276 SPS: 474
+1374999 success 1.0 +/- 0.0
+1374999 eval return 1311.687 +/- 88.887
+time:  49.103 SPS: 475
+1399999 success 1.0 +/- 0.0
+1399999 eval return 1292.69 +/- 101.404
+time:  49.91 SPS: 475
+1424999 success 0.9 +/- 0.1
+1424999 eval return 1295.472 +/- 79.99
+time:  50.772 SPS: 475
+1449999 success 1.0 +/- 0.0
+1449999 eval return 1248.554 +/- 118.617
+time:  51.625 SPS: 476
+1474999 success 1.0 +/- 0.0
+1474999 eval return 1279.223 +/- 89.192
+time:  52.449 SPS: 476
+1499999 success 1.0 +/- 0.0
+1499999 eval return 1417.062 +/- 9.301
+time:  53.246 SPS: 477
+1524999 success 1.0 +/- 0.0
+1524999 eval return 1356.971 +/- 69.905
+time:  54.053 SPS: 477
+1549999 success 1.0 +/- 0.0
+1549999 eval return 1354.198 +/- 70.635
+time:  54.898 SPS: 478
+1574999 success 1.0 +/- 0.0
+1574999 eval return 1374.905 +/- 36.933
+time:  55.724 SPS: 478
+1599999 success 1.0 +/- 0.0
+1599999 eval return 1303.598 +/- 91.787
+time:  56.553 SPS: 478
+1624999 success 1.0 +/- 0.0
+1624999 eval return 1328.175 +/- 72.232
+time:  57.381 SPS: 479
+1649999 success 1.0 +/- 0.0
+1649999 eval return 1361.874 +/- 28.106
+time:  58.205 SPS: 479
+1674999 success 1.0 +/- 0.0
+1674999 eval return 1402.124 +/- 9.09
+time:  59.081 SPS: 479
+1699999 success 1.0 +/- 0.0
+1699999 eval return 1385.272 +/- 22.913
+time:  59.901 SPS: 479
+1724999 success 1.0 +/- 0.0
+1724999 eval return 1393.804 +/- 38.072
+time:  60.716 SPS: 480
+1749999 success 1.0 +/- 0.0
+1749999 eval return 1425.666 +/- 10.433
+time:  61.556 SPS: 480
+1774999 success 1.0 +/- 0.0
+1774999 eval return 1426.409 +/- 7.095
+time:  62.38 SPS: 480
+1799999 success 1.0 +/- 0.0
+1799999 eval return 1445.451 +/- 6.067
+time:  63.221 SPS: 481
+1824999 success 1.0 +/- 0.0
+1824999 eval return 1431.1 +/- 7.5
+time:  64.044 SPS: 481
+1849999 success 1.0 +/- 0.0
+1849999 eval return 1346.844 +/- 69.132
+time:  64.87 SPS: 481
+1874999 success 1.0 +/- 0.0
+1874999 eval return 1323.219 +/- 95.936
+time:  65.69 SPS: 482
+1899999 success 1.0 +/- 0.0
+1899999 eval return 1431.542 +/- 4.858
+time:  66.524 SPS: 482
+1924999 success 1.0 +/- 0.0
+1924999 eval return 1419.967 +/- 12.652
+time:  67.371 SPS: 482
+1949999 success 1.0 +/- 0.0
+1949999 eval return 1413.95 +/- 10.863
+time:  68.195 SPS: 482
+1974999 success 1.0 +/- 0.0
+1974999 eval return 1404.592 +/- 16.45
+TASK 3  428 plate-slide-side-v3
+time:  69.014 SPS: 482
+1999999 success 0.0 +/- 0.0
+1999999 eval return 15.531 +/- 0.915
+time:  69.85 SPS: 483
+2024999 success 0.0 +/- 0.0
+2024999 eval return 15.392 +/- 1.676
+time:  70.676 SPS: 483
+2049999 success 0.0 +/- 0.0
+2049999 eval return 31.218 +/- 3.953
+time:  71.53 SPS: 483
+2074999 success 0.0 +/- 0.0
+2074999 eval return 90.249 +/- 5.34
+time:  72.363 SPS: 483
+2099999 success 0.0 +/- 0.0
+2099999 eval return 141.458 +/- 10.688
+time:  73.211 SPS: 483
+2124999 success 0.0 +/- 0.0
+2124999 eval return 113.737 +/- 13.695
+time:  74.052 SPS: 483
+2149999 success 0.0 +/- 0.0
+2149999 eval return 148.093 +/- 12.602
+time:  74.919 SPS: 483
+2174999 success 0.0 +/- 0.0
+2174999 eval return 205.463 +/- 16.22
+time:  75.755 SPS: 484
+2199999 success 0.0 +/- 0.0
+2199999 eval return 499.592 +/- 3.655
+time:  76.622 SPS: 483
+2224999 success 0.0 +/- 0.0
+2224999 eval return 375.47 +/- 41.04
+time:  77.498 SPS: 483
+2249999 success 0.0 +/- 0.0
+2249999 eval return 433.036 +/- 45.629
+time:  78.356 SPS: 483
+2274999 success 0.0 +/- 0.0
+2274999 eval return 461.96 +/- 26.721
+time:  79.251 SPS: 483
+2299999 success 0.0 +/- 0.0
+2299999 eval return 418.535 +/- 41.803
+time:  80.121 SPS: 483
+2324999 success 0.0 +/- 0.0
+2324999 eval return 422.512 +/- 41.646
+time:  80.984 SPS: 483
+2349999 success 0.0 +/- 0.0
+2349999 eval return 449.407 +/- 35.142
+time:  81.845 SPS: 483
+2374999 success 0.0 +/- 0.0
+2374999 eval return 444.935 +/- 44.93
+time:  82.718 SPS: 483
+2399999 success 0.0 +/- 0.0
+2399999 eval return 540.854 +/- 47.265
+time:  83.63 SPS: 483
+2424999 success 0.3 +/- 0.153
+2424999 eval return 791.156 +/- 90.985
+time:  84.526 SPS: 483
+2449999 success 0.6 +/- 0.163
+2449999 eval return 1056.815 +/- 98.823
+time:  85.427 SPS: 482
+2474999 success 1.0 +/- 0.0
+2474999 eval return 1512.446 +/- 29.431
+time:  86.344 SPS: 482
+2499999 success 1.0 +/- 0.0
+2499999 eval return 1397.333 +/- 114.621
+time:  87.251 SPS: 482
+2524999 success 1.0 +/- 0.0
+2524999 eval return 1480.938 +/- 39.313
+time:  88.171 SPS: 482
+2549999 success 1.0 +/- 0.0
+2549999 eval return 1498.781 +/- 37.291
+time:  89.073 SPS: 481
+2574999 success 1.0 +/- 0.0
+2574999 eval return 1434.911 +/- 54.253
+time:  89.962 SPS: 481
+2599999 success 0.8 +/- 0.133
+2599999 eval return 1210.709 +/- 201.444
+time:  90.84 SPS: 481
+2624999 success 1.0 +/- 0.0
+2624999 eval return 1399.96 +/- 118.226
+time:  91.724 SPS: 481
+2649999 success 0.9 +/- 0.1
+2649999 eval return 1172.661 +/- 176.152
+time:  92.644 SPS: 481
+2674999 success 1.0 +/- 0.0
+2674999 eval return 1514.453 +/- 29.693
+time:  93.542 SPS: 481
+2699999 success 0.6 +/- 0.163
+2699999 eval return 1269.146 +/- 82.661
+time:  94.438 SPS: 480
+2724999 success 1.0 +/- 0.0
+2724999 eval return 1582.539 +/- 23.71
+time:  95.319 SPS: 480
+2749999 success 1.0 +/- 0.0
+2749999 eval return 1490.493 +/- 37.148
+time:  96.221 SPS: 480
+2774999 success 1.0 +/- 0.0
+2774999 eval return 1390.659 +/- 37.88
+time:  97.147 SPS: 480
+2799999 success 1.0 +/- 0.0
+2799999 eval return 1566.696 +/- 20.775
+time:  98.049 SPS: 480
+2824999 success 1.0 +/- 0.0
+2824999 eval return 1427.493 +/- 25.592
+time:  98.969 SPS: 479
+2849999 success 1.0 +/- 0.0
+2849999 eval return 1290.452 +/- 113.582
+time:  99.873 SPS: 479
+2874999 success 1.0 +/- 0.0
+2874999 eval return 1517.379 +/- 24.631
+time:  100.806 SPS: 479
+2899999 success 0.9 +/- 0.1
+2899999 eval return 1373.953 +/- 148.758
+time:  101.714 SPS: 479
+2924999 success 0.8 +/- 0.133
+2924999 eval return 1271.712 +/- 192.695
+time:  102.614 SPS: 479
+2949999 success 1.0 +/- 0.0
+2949999 eval return 1426.925 +/- 23.769
+time:  103.526 SPS: 478
+2974999 success 1.0 +/- 0.0
+2974999 eval return 1491.759 +/- 30.284
+TASK 4  528 door-close-v3
+time:  104.424 SPS: 478
+2999999 success 0.0 +/- 0.0
+2999999 eval return 63.916 +/- 1.943
+time:  105.33 SPS: 478
+3024999 success 1.0 +/- 0.0
+3024999 eval return 1303.729 +/- 31.679
+time:  106.208 SPS: 478
+3049999 success 1.0 +/- 0.0
+3049999 eval return 1460.37 +/- 17.093
+time:  107.088 SPS: 478
+3074999 success 1.0 +/- 0.0
+3074999 eval return 1467.356 +/- 8.935
+time:  107.968 SPS: 478
+3099999 success 1.0 +/- 0.0
+3099999 eval return 1494.005 +/- 12.848
+time:  108.819 SPS: 478
+3124999 success 1.0 +/- 0.0
+3124999 eval return 1517.936 +/- 9.843
+time:  109.725 SPS: 478
+3149999 success 1.0 +/- 0.0
+3149999 eval return 1450.09 +/- 25.893
+time:  110.598 SPS: 478
+3174999 success 1.0 +/- 0.0
+3174999 eval return 1444.379 +/- 24.862
+time:  111.469 SPS: 478
+3199999 success 1.0 +/- 0.0
+3199999 eval return 1494.902 +/- 18.913
+time:  112.326 SPS: 478
+3224999 success 0.9 +/- 0.1
+3224999 eval return 1261.406 +/- 35.747
+time:  113.2 SPS: 478
+3249999 success 0.8 +/- 0.133
+3249999 eval return 1284.02 +/- 52.016
+time:  114.123 SPS: 478
+3274999 success 1.0 +/- 0.0
+3274999 eval return 1433.623 +/- 46.258
+time:  114.983 SPS: 478
+3299999 success 1.0 +/- 0.0
+3299999 eval return 1449.425 +/- 30.343
+time:  115.858 SPS: 478
+3324999 success 1.0 +/- 0.0
+3324999 eval return 1465.658 +/- 26.806
+time:  116.707 SPS: 478
+3349999 success 0.9 +/- 0.1
+3349999 eval return 1386.488 +/- 37.291
+time:  117.567 SPS: 478
+3374999 success 0.8 +/- 0.133
+3374999 eval return 1415.904 +/- 50.753
+time:  118.46 SPS: 478
+3399999 success 0.9 +/- 0.1
+3399999 eval return 1435.766 +/- 27.81
+time:  119.339 SPS: 478
+3424999 success 0.9 +/- 0.1
+3424999 eval return 1302.627 +/- 39.284
+time:  120.226 SPS: 478
+3449999 success 1.0 +/- 0.0
+3449999 eval return 1446.023 +/- 10.392
+time:  121.118 SPS: 478
+3474999 success 1.0 +/- 0.0
+3474999 eval return 1483.051 +/- 21.486
+time:  121.999 SPS: 478
+3499999 success 1.0 +/- 0.0
+3499999 eval return 1529.793 +/- 7.584
+time:  122.897 SPS: 478
+3524999 success 1.0 +/- 0.0
+3524999 eval return 1480.08 +/- 19.047
+time:  123.772 SPS: 478
+3549999 success 0.6 +/- 0.163
+3549999 eval return 1282.323 +/- 44.667
+time:  124.619 SPS: 478
+3574999 success 0.6 +/- 0.163
+3574999 eval return 1297.046 +/- 62.955
+time:  125.485 SPS: 478
+3599999 success 1.0 +/- 0.0
+3599999 eval return 1457.612 +/- 33.338
+time:  126.385 SPS: 478
+3624999 success 0.8 +/- 0.133
+3624999 eval return 1341.946 +/- 36.548
+time:  127.26 SPS: 478
+3649999 success 1.0 +/- 0.0
+3649999 eval return 1388.587 +/- 26.45
+time:  128.126 SPS: 478
+3674999 success 1.0 +/- 0.0
+3674999 eval return 1410.411 +/- 40.703
+time:  128.999 SPS: 478
+3699999 success 1.0 +/- 0.0
+3699999 eval return 1503.03 +/- 15.924
+time:  129.866 SPS: 478
+3724999 success 0.9 +/- 0.1
+3724999 eval return 1489.696 +/- 27.904
+time:  130.756 SPS: 477
+3749999 success 1.0 +/- 0.0
+3749999 eval return 1498.917 +/- 14.897
+time:  131.616 SPS: 478
+3774999 success 1.0 +/- 0.0
+3774999 eval return 1499.314 +/- 13.043
+time:  132.463 SPS: 478
+3799999 success 1.0 +/- 0.0
+3799999 eval return 1508.604 +/- 11.134
+time:  133.326 SPS: 478
+3824999 success 1.0 +/- 0.0
+3824999 eval return 1457.129 +/- 24.216
+time:  134.187 SPS: 478
+3849999 success 0.8 +/- 0.133
+3849999 eval return 1223.479 +/- 36.609
+time:  135.086 SPS: 478
+3874999 success 0.7 +/- 0.153
+3874999 eval return 1204.015 +/- 46.219
+time:  135.945 SPS: 478
+3899999 success 1.0 +/- 0.0
+3899999 eval return 1526.181 +/- 9.507
+time:  136.803 SPS: 478
+3924999 success 1.0 +/- 0.0
+3924999 eval return 1500.063 +/- 14.406
+time:  137.691 SPS: 478
+3949999 success 1.0 +/- 0.0
+3949999 eval return 1508.441 +/- 12.302
+time:  138.559 SPS: 478
+3974999 success 0.9 +/- 0.1
+3974999 eval return 1364.521 +/- 47.512
+TASK 5  628 plate-slide-back-side-v3
+time:  139.477 SPS: 477
+3999999 success 0.0 +/- 0.0
+3999999 eval return 35.974 +/- 4.999
+time:  140.324 SPS: 478
+4024999 success 0.3 +/- 0.153
+4024999 eval return 539.479 +/- 116.799
+time:  141.211 SPS: 478
+4049999 success 0.5 +/- 0.167
+4049999 eval return 701.574 +/- 192.259
+time:  142.083 SPS: 478
+4074999 success 0.6 +/- 0.163
+4074999 eval return 944.491 +/- 149.914
+time:  142.961 SPS: 477
+4099999 success 0.9 +/- 0.1
+4099999 eval return 1164.903 +/- 137.116
+time:  143.873 SPS: 477
+4124999 success 1.0 +/- 0.0
+4124999 eval return 1397.537 +/- 24.935
+time:  144.771 SPS: 477
+4149999 success 0.9 +/- 0.1
+4149999 eval return 1181.868 +/- 118.543
+time:  145.652 SPS: 477
+4174999 success 0.5 +/- 0.167
+4174999 eval return 735.098 +/- 228.324
+time:  146.538 SPS: 477
+4199999 success 1.0 +/- 0.0
+4199999 eval return 1457.976 +/- 17.665
+time:  147.419 SPS: 477
+4224999 success 1.0 +/- 0.0
+4224999 eval return 1450.634 +/- 21.788
+time:  148.339 SPS: 477
+4249999 success 0.7 +/- 0.153
+4249999 eval return 1100.482 +/- 233.198
+time:  149.231 SPS: 477
+4274999 success 1.0 +/- 0.0
+4274999 eval return 1604.897 +/- 22.257
+time:  150.107 SPS: 477
+4299999 success 1.0 +/- 0.0
+4299999 eval return 1578.978 +/- 17.764
+time:  150.998 SPS: 477
+4324999 success 1.0 +/- 0.0
+4324999 eval return 1611.565 +/- 20.583
+time:  151.828 SPS: 477
+4349999 success 1.0 +/- 0.0
+4349999 eval return 1503.981 +/- 24.204
+time:  152.511 SPS: 478
+4374999 success 0.9 +/- 0.1
+4374999 eval return 1424.236 +/- 22.214
+time:  153.156 SPS: 478
+4399999 success 0.8 +/- 0.133
+4399999 eval return 1243.349 +/- 203.375
+time:  153.772 SPS: 479
+4424999 success 1.0 +/- 0.0
+4424999 eval return 1561.264 +/- 26.876
+time:  154.357 SPS: 480
+4449999 success 0.9 +/- 0.1
+4449999 eval return 1377.275 +/- 165.902
+time:  155.007 SPS: 481
+4474999 success 1.0 +/- 0.0
+4474999 eval return 1575.17 +/- 15.16
+time:  155.631 SPS: 481
+4499999 success 1.0 +/- 0.0
+4499999 eval return 1511.241 +/- 18.262
+time:  156.252 SPS: 482
+4524999 success 1.0 +/- 0.0
+4524999 eval return 1499.713 +/- 33.867
+time:  156.881 SPS: 483
+4549999 success 1.0 +/- 0.0
+4549999 eval return 1549.358 +/- 12.703
+time:  157.507 SPS: 484
+4574999 success 1.0 +/- 0.0
+4574999 eval return 1471.079 +/- 65.47
+time:  158.158 SPS: 484
+4599999 success 1.0 +/- 0.0
+4599999 eval return 1513.854 +/- 14.635
+time:  158.788 SPS: 485
+4624999 success 1.0 +/- 0.0
+4624999 eval return 1475.302 +/- 36.231
+time:  159.419 SPS: 486
+4649999 success 1.0 +/- 0.0
+4649999 eval return 1325.263 +/- 121.838
+time:  160.044 SPS: 486
+4674999 success 1.0 +/- 0.0
+4674999 eval return 1323.198 +/- 41.529
+time:  160.655 SPS: 487
+4699999 success 0.8 +/- 0.133
+4699999 eval return 1302.291 +/- 145.578
+time:  161.295 SPS: 488
+4724999 success 1.0 +/- 0.0
+4724999 eval return 1544.233 +/- 38.306
+time:  161.921 SPS: 488
+4749999 success 1.0 +/- 0.0
+4749999 eval return 1597.375 +/- 21.182
+time:  162.548 SPS: 489
+4774999 success 1.0 +/- 0.0
+4774999 eval return 1598.736 +/- 24.602
+time:  163.174 SPS: 490
+4799999 success 0.9 +/- 0.1
+4799999 eval return 1442.016 +/- 155.703
+time:  163.798 SPS: 490
+4824999 success 1.0 +/- 0.0
+4824999 eval return 1474.338 +/- 11.342
+time:  164.444 SPS: 491
+4849999 success 1.0 +/- 0.0
+4849999 eval return 1545.902 +/- 27.262
+time:  165.067 SPS: 492
+4874999 success 0.9 +/- 0.1
+4874999 eval return 1255.701 +/- 173.123
+time:  165.627 SPS: 493
+4899999 success 0.8 +/- 0.133
+4899999 eval return 1223.418 +/- 202.591
+time:  166.146 SPS: 494
+4924999 success 0.7 +/- 0.153
+4924999 eval return 1051.163 +/- 224.757
+time:  166.63 SPS: 495
+4949999 success 0.9 +/- 0.1
+4949999 eval return 1250.175 +/- 198.942
+time:  167.105 SPS: 496
+4974999 success 1.0 +/- 0.0
+4974999 eval return 1567.85 +/- 22.903
+TASK 6  728 plate-slide-back-v3
+time:  167.541 SPS: 497
+4999999 success 0.0 +/- 0.0
+4999999 eval return 37.864 +/- 1.027
+done RL run. Time 167.56071702166616 min

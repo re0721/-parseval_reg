@@ -1,0 +1,692 @@
+agent_dict keys dict_keys(['base_algorithm', 'learning_rate', 'num_envs', 'rollout_num_steps', 'gamma', 'gae_lambda', 'num_minibatches', 'update_epochs', 'minibatch_size', 'norm_adv', 'clip_coef', 'clip_vloss', 'ent_coef', 'vf_coef', 'max_grad_norm', 'rpo_alpha', 'parseval_reg', 'input_scale', 'learnable_input_scale', 'add_diag_layer', 'lie_group', 'pion', 'pion_block_size', 'oft', 'poet', 'oet_num_blocks', 'layer_norm', 'layer_norm_no_params', 'weight_decay', 'tuned_adam', 'perturb', 'perturb_dist', 'regen', 'regen_wasserstein', 'weight_init', 'net_width', 'net_activation', 'init_gain', 'parseval_norm', 'parseval_num_groups'])
+env_dict keys dict_keys(['env', 'change_freq', 'seed', 'env_type'])
+Start RL run!
+{'base_algorithm': 'ppo_agent', 'learning_rate': 0.003, 'num_envs': 1, 'rollout_num_steps': 128, 'gamma': 0.99, 'gae_lambda': 0.95, 'num_minibatches': 4, 'update_epochs': 4, 'minibatch_size': 32, 'norm_adv': True, 'clip_coef': 0.2, 'clip_vloss': True, 'ent_coef': 0.01, 'vf_coef': 0.5, 'max_grad_norm': 0.5, 'rpo_alpha': 0, 'parseval_reg': 0, 'input_scale': 1, 'learnable_input_scale': False, 'add_diag_layer': False, 'lie_group': False, 'pion': False, 'pion_block_size': None, 'oft': True, 'poet': False, 'oet_num_blocks': 9, 'layer_norm': False, 'layer_norm_no_params': False, 'weight_decay': 0, 'tuned_adam': False, 'perturb': 0.0, 'perturb_dist': 'xavier', 'regen': 0.0, 'regen_wasserstein': False, 'weight_init': 'orthogonal', 'net_width': 64, 'net_activation': 'tanh', 'init_gain': None, 'parseval_norm': False, 'parseval_num_groups': 1, 'device': 'cpu'}
+{'env': 'gridworld_ninerooms', 'change_freq': 40000, 'seed': 126, 'env_type': 'rl', 'local_run': False}
+Running on gpu: False
+Gridworld args () {'env': 'gridworld_ninerooms', 'change_freq': 40000, 'seed': 126, 'env_type': 'rl', 'local_run': False}
+time:  0.056 SPS: 0
+0 success 0.0 +/- 0.0
+0 eval steps mean 99.9 best 99 optimal 10
+0 eval return -15.074 +/- 0.337
+time:  0.582 SPS: 143
+4999 success 0.4 +/- 0.163
+4999 eval steps mean 93.9 best 62 optimal 10
+4999 eval return -8.392 +/- 1.367
+time:  1.115 SPS: 149
+9999 success 0.0 +/- 0.0
+9999 eval steps mean 99.9 best 99 optimal 10
+9999 eval return -13.057 +/- 0.929
+time:  1.654 SPS: 151
+14999 success 1.0 +/- 0.0
+14999 eval steps mean 34.2 best 15 optimal 10
+14999 eval return -0.606 +/- 1.08
+time:  2.165 SPS: 153
+19999 success 1.0 +/- 0.0
+19999 eval steps mean 32.4 best 16 optimal 10
+19999 eval return 0.777 +/- 0.473
+time:  2.68 SPS: 155
+24999 success 0.9 +/- 0.1
+24999 eval steps mean 31.5 best 15 optimal 10
+24999 eval return 1.104 +/- 0.65
+time:  3.205 SPS: 155
+29999 success 1.0 +/- 0.0
+29999 eval steps mean 20.1 best 14 optimal 10
+29999 eval return 1.639 +/- 0.201
+time:  3.71 SPS: 157
+34999 success 1.0 +/- 0.0
+34999 eval steps mean 15.1 best 14 optimal 10
+34999 eval return 1.939 +/- 0.011
+40000
+GOAL [12 14]
+time:  4.193 SPS: 158
+39999 success 0.0 +/- 0.0
+39999 eval steps mean 99.9 best 99 optimal 12
+39999 eval return -14.531 +/- 0.554
+time:  4.735 SPS: 158
+44999 success 0.0 +/- 0.0
+44999 eval steps mean 99.9 best 99 optimal 12
+44999 eval return -8.598 +/- 0.011
+time:  5.273 SPS: 158
+49999 success 0.0 +/- 0.0
+49999 eval steps mean 99.9 best 99 optimal 12
+49999 eval return -7.842 +/- 0.166
+time:  5.822 SPS: 157
+54999 success 0.0 +/- 0.0
+54999 eval steps mean 99.9 best 99 optimal 12
+54999 eval return -7.626 +/- 0.004
+time:  6.366 SPS: 157
+59999 success 0.0 +/- 0.0
+59999 eval steps mean 99.9 best 99 optimal 12
+59999 eval return -7.805 +/- 0.181
+time:  6.909 SPS: 156
+64999 success 0.0 +/- 0.0
+64999 eval steps mean 99.9 best 99 optimal 12
+64999 eval return -8.874 +/- 0.064
+time:  7.447 SPS: 156
+69999 success 0.0 +/- 0.0
+69999 eval steps mean 99.9 best 99 optimal 12
+69999 eval return -7.62 +/- 0.0
+time:  8.002 SPS: 156
+74999 success 0.0 +/- 0.0
+74999 eval steps mean 99.9 best 99 optimal 12
+74999 eval return -8.047 +/- 0.065
+80000
+GOAL [10 12]
+time:  8.582 SPS: 155
+79999 success 0.0 +/- 0.0
+79999 eval steps mean 99.9 best 99 optimal 8
+79999 eval return -7.629 +/- 0.007
+time:  9.155 SPS: 154
+84999 success 0.0 +/- 0.0
+84999 eval steps mean 99.9 best 99 optimal 8
+84999 eval return -7.628 +/- 0.006
+time:  9.751 SPS: 153
+89999 success 0.0 +/- 0.0
+89999 eval steps mean 99.9 best 99 optimal 8
+89999 eval return -8.037 +/- 0.28
+time:  10.304 SPS: 153
+94999 success 0.0 +/- 0.0
+94999 eval steps mean 99.9 best 99 optimal 8
+94999 eval return -7.708 +/- 0.031
+time:  10.878 SPS: 153
+99999 success 0.0 +/- 0.0
+99999 eval steps mean 99.9 best 99 optimal 8
+99999 eval return -7.641 +/- 0.012
+time:  11.455 SPS: 152
+104999 success 0.0 +/- 0.0
+104999 eval steps mean 99.9 best 99 optimal 8
+104999 eval return -7.665 +/- 0.014
+time:  12.025 SPS: 152
+109999 success 0.0 +/- 0.0
+109999 eval steps mean 99.9 best 99 optimal 8
+109999 eval return -7.319 +/- 0.036
+time:  12.623 SPS: 151
+114999 success 1.0 +/- 0.0
+114999 eval steps mean 46.3 best 20 optimal 8
+114999 eval return -0.369 +/- 0.554
+120000
+GOAL [12 14]
+time:  13.21 SPS: 151
+119999 success 0.7 +/- 0.153
+119999 eval steps mean 52.7 best 19 optimal 12
+119999 eval return -0.808 +/- 1.181
+time:  13.818 SPS: 150
+124999 success 1.0 +/- 0.0
+124999 eval steps mean 14.3 best 12 optimal 12
+124999 eval return 2.138 +/- 0.079
+time:  14.391 SPS: 150
+129999 success 0.8 +/- 0.133
+129999 eval steps mean 30.5 best 12 optimal 12
+129999 eval return 0.345 +/- 1.243
+time:  14.899 SPS: 151
+134999 success 1.0 +/- 0.0
+134999 eval steps mean 13.6 best 13 optimal 12
+134999 eval return 2.174 +/- 0.041
+time:  15.381 SPS: 151
+139999 success 1.0 +/- 0.0
+139999 eval steps mean 13.3 best 12 optimal 12
+139999 eval return 2.191 +/- 0.023
+time:  15.881 SPS: 152
+144999 success 1.0 +/- 0.0
+144999 eval steps mean 13.3 best 12 optimal 12
+144999 eval return 2.208 +/- 0.008
+time:  16.377 SPS: 152
+149999 success 1.0 +/- 0.0
+149999 eval steps mean 14.3 best 12 optimal 12
+149999 eval return 2.139 +/- 0.07
+time:  16.873 SPS: 153
+154999 success 1.0 +/- 0.0
+154999 eval steps mean 13.1 best 12 optimal 12
+154999 eval return 2.217 +/- 0.003
+160000
+GOAL [12  1]
+time:  17.376 SPS: 153
+159999 success 0.0 +/- 0.0
+159999 eval steps mean 99.9 best 99 optimal 11
+159999 eval return -12.662 +/- 0.054
+time:  17.897 SPS: 153
+164999 success 0.0 +/- 0.0
+164999 eval steps mean 99.9 best 99 optimal 11
+164999 eval return -7.895 +/- 0.024
+time:  18.435 SPS: 153
+169999 success 0.9 +/- 0.1
+169999 eval steps mean 24.6 best 14 optimal 11
+169999 eval return 0.809 +/- 1.344
+time:  18.928 SPS: 154
+174999 success 1.0 +/- 0.0
+174999 eval steps mean 12.7 best 11 optimal 11
+174999 eval return 2.32 +/- 0.008
+time:  19.416 SPS: 154
+179999 success 1.0 +/- 0.0
+179999 eval steps mean 11.9 best 11 optimal 11
+179999 eval return 2.34 +/- 0.0
+time:  19.902 SPS: 154
+184999 success 0.6 +/- 0.163
+184999 eval steps mean 61.8 best 12 optimal 11
+184999 eval return -1.627 +/- 1.251
+time:  20.402 SPS: 155
+189999 success 1.0 +/- 0.0
+189999 eval steps mean 11.9 best 11 optimal 11
+189999 eval return 2.34 +/- 0.0
+time:  20.896 SPS: 155
+194999 success 1.0 +/- 0.0
+194999 eval steps mean 12.0 best 11 optimal 11
+194999 eval return 2.333 +/- 0.007
+200000
+GOAL [10 11]
+time:  21.392 SPS: 155
+199999 success 0.0 +/- 0.0
+199999 eval steps mean 99.9 best 99 optimal 7
+199999 eval return -13.426 +/- 0.04
+time:  21.905 SPS: 155
+204999 success 0.0 +/- 0.0
+204999 eval steps mean 99.9 best 99 optimal 7
+204999 eval return -5.017 +/- 0.175
+time:  22.422 SPS: 156
+209999 success 0.0 +/- 0.0
+209999 eval steps mean 99.9 best 99 optimal 7
+209999 eval return -3.264 +/- 0.144
+time:  22.954 SPS: 156
+214999 success 1.0 +/- 0.0
+214999 eval steps mean 12.7 best 11 optimal 7
+214999 eval return 2.304 +/- 0.016
+time:  23.448 SPS: 156
+219999 success 1.0 +/- 0.0
+219999 eval steps mean 12.1 best 11 optimal 7
+219999 eval return 2.331 +/- 0.009
+time:  23.938 SPS: 156
+224999 success 1.0 +/- 0.0
+224999 eval steps mean 12.3 best 11 optimal 7
+224999 eval return 2.314 +/- 0.018
+time:  24.429 SPS: 156
+229999 success 1.0 +/- 0.0
+229999 eval steps mean 12.1 best 11 optimal 7
+229999 eval return 2.333 +/- 0.007
+time:  24.926 SPS: 157
+234999 success 0.9 +/- 0.1
+234999 eval steps mean 20.9 best 11 optimal 7
+234999 eval return 1.445 +/- 0.889
+240000
+GOAL [6 1]
+time:  25.43 SPS: 157
+239999 success 0.0 +/- 0.0
+239999 eval steps mean 99.9 best 99 optimal 7
+239999 eval return -16.395 +/- 0.019
+time:  25.934 SPS: 157
+244999 success 0.0 +/- 0.0
+244999 eval steps mean 99.9 best 99 optimal 7
+244999 eval return -12.464 +/- 1.09
+time:  26.445 SPS: 157
+249999 success 0.0 +/- 0.0
+249999 eval steps mean 99.9 best 99 optimal 7
+249999 eval return -12.598 +/- 0.747
+time:  26.977 SPS: 157
+254999 success 0.8 +/- 0.133
+254999 eval steps mean 50.6 best 20 optimal 7
+254999 eval return -0.23 +/- 0.512
+time:  27.476 SPS: 157
+259999 success 0.9 +/- 0.1
+259999 eval steps mean 32.8 best 20 optimal 7
+259999 eval return -0.104 +/- 1.118
+time:  27.976 SPS: 157
+264999 success 1.0 +/- 0.0
+264999 eval steps mean 20.3 best 18 optimal 7
+264999 eval return 1.222 +/- 0.073
+time:  28.467 SPS: 158
+269999 success 1.0 +/- 0.0
+269999 eval steps mean 19.1 best 18 optimal 7
+269999 eval return 1.446 +/- 0.02
+time:  28.96 SPS: 158
+274999 success 1.0 +/- 0.0
+274999 eval steps mean 17.9 best 17 optimal 7
+274999 eval return 1.49 +/- 0.0
+280000
+GOAL [5 2]
+time:  29.462 SPS: 158
+279999 success 0.1 +/- 0.1
+279999 eval steps mean 91.7 best 18 optimal 7
+279999 eval return -3.383 +/- 0.561
+time:  29.965 SPS: 158
+284999 success 1.0 +/- 0.0
+284999 eval steps mean 18.9 best 17 optimal 7
+284999 eval return 1.415 +/- 0.048
+time:  30.452 SPS: 158
+289999 success 1.0 +/- 0.0
+289999 eval steps mean 18.5 best 18 optimal 7
+289999 eval return 1.447 +/- 0.059
+time:  30.937 SPS: 158
+294999 success 0.0 +/- 0.0
+294999 eval steps mean 99.9 best 99 optimal 7
+294999 eval return -7.215 +/- 0.257
+time:  31.461 SPS: 158
+299999 success 1.0 +/- 0.0
+299999 eval steps mean 27.6 best 20 optimal 7
+299999 eval return 0.506 +/- 0.238
+time:  31.941 SPS: 159
+304999 success 1.0 +/- 0.0
+304999 eval steps mean 17.9 best 17 optimal 7
+304999 eval return 1.53 +/- 0.0
+time:  32.415 SPS: 159
+309999 success 1.0 +/- 0.0
+309999 eval steps mean 25.7 best 18 optimal 7
+309999 eval return 0.933 +/- 0.192
+time:  32.894 SPS: 159
+314999 success 0.9 +/- 0.1
+314999 eval steps mean 27.1 best 17 optimal 7
+314999 eval return 0.914 +/- 0.555
+320000
+GOAL [10  1]
+time:  33.391 SPS: 159
+319999 success 0.0 +/- 0.0
+319999 eval steps mean 99.9 best 99 optimal 9
+319999 eval return -7.26 +/- 0.102
+time:  33.919 SPS: 159
+324999 success 1.0 +/- 0.0
+324999 eval steps mean 18.1 best 16 optimal 9
+324999 eval return 1.811 +/- 0.023
+time:  34.404 SPS: 159
+329999 success 0.9 +/- 0.1
+329999 eval steps mean 22.7 best 13 optimal 9
+329999 eval return 1.445 +/- 0.618
+time:  34.881 SPS: 160
+334999 success 0.1 +/- 0.1
+334999 eval steps mean 94.3 best 44 optimal 9
+334999 eval return -6.676 +/- 1.256
+time:  35.407 SPS: 160
+339999 success 1.0 +/- 0.0
+339999 eval steps mean 13.9 best 13 optimal 9
+339999 eval return 2.09 +/- 0.0
+time:  35.89 SPS: 160
+344999 success 1.0 +/- 0.0
+344999 eval steps mean 13.9 best 13 optimal 9
+344999 eval return 2.09 +/- 0.0
+time:  36.379 SPS: 160
+349999 success 0.9 +/- 0.1
+349999 eval steps mean 22.5 best 13 optimal 9
+349999 eval return 1.434 +/- 0.656
+time:  36.859 SPS: 160
+354999 success 1.0 +/- 0.0
+354999 eval steps mean 13.9 best 13 optimal 9
+354999 eval return 2.09 +/- 0.0
+360000
+GOAL [ 8 10]
+time:  37.359 SPS: 160
+359999 success 0.0 +/- 0.0
+359999 eval steps mean 99.9 best 99 optimal 4
+359999 eval return -18.067 +/- 0.032
+time:  37.865 SPS: 160
+364999 success 0.0 +/- 0.0
+364999 eval steps mean 99.9 best 99 optimal 4
+364999 eval return -11.909 +/- 0.495
+time:  38.378 SPS: 160
+369999 success 0.0 +/- 0.0
+369999 eval steps mean 99.9 best 99 optimal 4
+369999 eval return -12.078 +/- 0.851
+time:  38.902 SPS: 160
+374999 success 0.0 +/- 0.0
+374999 eval steps mean 99.9 best 99 optimal 4
+374999 eval return -10.222 +/- 0.018
+time:  39.418 SPS: 160
+379999 success 0.0 +/- 0.0
+379999 eval steps mean 99.9 best 99 optimal 4
+379999 eval return -10.379 +/- 0.78
+time:  39.92 SPS: 160
+384999 success 0.0 +/- 0.0
+384999 eval steps mean 99.9 best 99 optimal 4
+384999 eval return -8.658 +/- 0.225
+time:  40.409 SPS: 160
+389999 success 0.0 +/- 0.0
+389999 eval steps mean 99.9 best 99 optimal 4
+389999 eval return -8.32 +/- 0.0
+time:  40.891 SPS: 160
+394999 success 0.0 +/- 0.0
+394999 eval steps mean 99.9 best 99 optimal 4
+394999 eval return -8.587 +/- 0.197
+400000
+GOAL [5 4]
+time:  41.382 SPS: 161
+399999 success 0.0 +/- 0.0
+399999 eval steps mean 99.9 best 99 optimal 5
+399999 eval return -20.46 +/- 0.0
+time:  41.856 SPS: 161
+404999 success 0.0 +/- 0.0
+404999 eval steps mean 99.9 best 99 optimal 5
+404999 eval return -15.96 +/- 0.0
+time:  42.325 SPS: 161
+409999 success 0.0 +/- 0.0
+409999 eval steps mean 99.9 best 99 optimal 5
+409999 eval return -15.96 +/- 0.0
+time:  42.81 SPS: 161
+414999 success 0.0 +/- 0.0
+414999 eval steps mean 99.9 best 99 optimal 5
+414999 eval return -15.96 +/- 0.0
+time:  43.285 SPS: 161
+419999 success 0.0 +/- 0.0
+419999 eval steps mean 99.9 best 99 optimal 5
+419999 eval return -15.96 +/- 0.0
+time:  43.757 SPS: 161
+424999 success 0.0 +/- 0.0
+424999 eval steps mean 99.9 best 99 optimal 5
+424999 eval return -15.96 +/- 0.0
+time:  44.23 SPS: 162
+429999 success 0.0 +/- 0.0
+429999 eval steps mean 99.9 best 99 optimal 5
+429999 eval return -15.96 +/- 0.0
+time:  44.701 SPS: 162
+434999 success 0.0 +/- 0.0
+434999 eval steps mean 99.9 best 99 optimal 5
+434999 eval return -15.96 +/- 0.0
+440000
+GOAL [11 14]
+time:  45.19 SPS: 162
+439999 success 0.0 +/- 0.0
+439999 eval steps mean 99.9 best 99 optimal 11
+439999 eval return -10.02 +/- 0.0
+time:  45.668 SPS: 162
+444999 success 0.0 +/- 0.0
+444999 eval steps mean 99.9 best 99 optimal 11
+444999 eval return -10.02 +/- 0.0
+time:  46.144 SPS: 162
+449999 success 0.0 +/- 0.0
+449999 eval steps mean 99.9 best 99 optimal 11
+449999 eval return -10.02 +/- 0.0
+time:  46.613 SPS: 162
+454999 success 0.0 +/- 0.0
+454999 eval steps mean 99.9 best 99 optimal 11
+454999 eval return -10.02 +/- 0.0
+time:  47.082 SPS: 162
+459999 success 0.0 +/- 0.0
+459999 eval steps mean 99.9 best 99 optimal 11
+459999 eval return -10.02 +/- 0.0
+time:  47.55 SPS: 162
+464999 success 0.0 +/- 0.0
+464999 eval steps mean 99.9 best 99 optimal 11
+464999 eval return -10.02 +/- 0.0
+time:  48.016 SPS: 163
+469999 success 0.0 +/- 0.0
+469999 eval steps mean 99.9 best 99 optimal 11
+469999 eval return -10.02 +/- 0.0
+time:  48.493 SPS: 163
+474999 success 0.0 +/- 0.0
+474999 eval steps mean 99.9 best 99 optimal 11
+474999 eval return -10.02 +/- 0.0
+480000
+GOAL [ 9 13]
+time:  48.975 SPS: 163
+479999 success 0.0 +/- 0.0
+479999 eval steps mean 99.9 best 99 optimal 8
+479999 eval return -11.02 +/- 0.0
+time:  49.446 SPS: 163
+484999 success 0.0 +/- 0.0
+484999 eval steps mean 99.9 best 99 optimal 8
+484999 eval return -11.02 +/- 0.0
+time:  49.961 SPS: 163
+489999 success 0.0 +/- 0.0
+489999 eval steps mean 99.9 best 99 optimal 8
+489999 eval return -10.933 +/- 0.027
+time:  50.482 SPS: 163
+494999 success 0.0 +/- 0.0
+494999 eval steps mean 99.9 best 99 optimal 8
+494999 eval return -9.62 +/- 0.0
+time:  51.02 SPS: 163
+499999 success 0.0 +/- 0.0
+499999 eval steps mean 99.9 best 99 optimal 8
+499999 eval return -9.62 +/- 0.0
+time:  51.557 SPS: 163
+504999 success 0.0 +/- 0.0
+504999 eval steps mean 99.9 best 99 optimal 8
+504999 eval return -9.62 +/- 0.0
+time:  52.092 SPS: 163
+509999 success 0.0 +/- 0.0
+509999 eval steps mean 99.9 best 99 optimal 8
+509999 eval return -9.62 +/- 0.0
+time:  52.625 SPS: 163
+514999 success 0.0 +/- 0.0
+514999 eval steps mean 99.9 best 99 optimal 8
+514999 eval return -9.62 +/- 0.0
+520000
+GOAL [13 13]
+time:  53.168 SPS: 163
+519999 success 0.0 +/- 0.0
+519999 eval steps mean 99.9 best 99 optimal 12
+519999 eval return -7.62 +/- 0.0
+time:  53.706 SPS: 162
+524999 success 0.0 +/- 0.0
+524999 eval steps mean 99.9 best 99 optimal 12
+524999 eval return -7.62 +/- 0.0
+time:  54.24 SPS: 162
+529999 success 0.0 +/- 0.0
+529999 eval steps mean 99.9 best 99 optimal 12
+529999 eval return -7.62 +/- 0.0
+time:  54.759 SPS: 162
+534999 success 0.0 +/- 0.0
+534999 eval steps mean 99.9 best 99 optimal 12
+534999 eval return -7.17 +/- 0.0
+time:  55.246 SPS: 162
+539999 success 0.1 +/- 0.1
+539999 eval steps mean 91.2 best 13 optimal 12
+539999 eval return -4.808 +/- 1.037
+time:  55.724 SPS: 163
+544999 success 0.0 +/- 0.0
+544999 eval steps mean 99.9 best 99 optimal 12
+544999 eval return -13.914 +/- 0.056
+time:  56.234 SPS: 163
+549999 success 1.0 +/- 0.0
+549999 eval steps mean 13.5 best 12 optimal 12
+549999 eval return 2.184 +/- 0.016
+time:  56.695 SPS: 163
+554999 success 1.0 +/- 0.0
+554999 eval steps mean 12.9 best 12 optimal 12
+554999 eval return 2.22 +/- 0.0
+560000
+GOAL [14  6]
+time:  57.17 SPS: 163
+559999 success 0.0 +/- 0.0
+559999 eval steps mean 99.9 best 99 optimal 8
+559999 eval return -11.198 +/- 0.014
+time:  57.64 SPS: 163
+564999 success 0.0 +/- 0.0
+564999 eval steps mean 99.9 best 99 optimal 8
+564999 eval return -1.28 +/- 0.0
+time:  58.131 SPS: 163
+569999 success 0.0 +/- 0.0
+569999 eval steps mean 99.9 best 99 optimal 8
+569999 eval return -1.28 +/- 0.0
+time:  58.6 SPS: 163
+574999 success 0.0 +/- 0.0
+574999 eval steps mean 99.9 best 99 optimal 8
+574999 eval return -1.28 +/- 0.0
+time:  59.072 SPS: 163
+579999 success 0.0 +/- 0.0
+579999 eval steps mean 99.9 best 99 optimal 8
+579999 eval return -1.28 +/- 0.0
+time:  59.552 SPS: 163
+584999 success 0.0 +/- 0.0
+584999 eval steps mean 99.9 best 99 optimal 8
+584999 eval return -2.588 +/- 0.149
+time:  60.069 SPS: 163
+589999 success 1.0 +/- 0.0
+589999 eval steps mean 8.9 best 8 optimal 8
+589999 eval return 2.64 +/- 0.0
+time:  60.545 SPS: 163
+594999 success 1.0 +/- 0.0
+594999 eval steps mean 8.9 best 8 optimal 8
+594999 eval return 2.64 +/- 0.0
+600000
+GOAL [ 8 13]
+time:  61.009 SPS: 163
+599999 success 0.0 +/- 0.0
+599999 eval steps mean 99.9 best 99 optimal 7
+599999 eval return -14.072 +/- 0.073
+time:  61.506 SPS: 163
+604999 success 0.0 +/- 0.0
+604999 eval steps mean 99.9 best 99 optimal 7
+604999 eval return -10.69 +/- 0.07
+time:  62.037 SPS: 163
+609999 success 0.0 +/- 0.0
+609999 eval steps mean 99.9 best 99 optimal 7
+609999 eval return -10.626 +/- 0.006
+time:  62.564 SPS: 163
+614999 success 0.0 +/- 0.0
+614999 eval steps mean 99.9 best 99 optimal 7
+614999 eval return -10.622 +/- 0.002
+time:  63.096 SPS: 163
+619999 success 0.0 +/- 0.0
+619999 eval steps mean 99.9 best 99 optimal 7
+619999 eval return -10.712 +/- 0.048
+time:  63.633 SPS: 163
+624999 success 0.0 +/- 0.0
+624999 eval steps mean 99.9 best 99 optimal 7
+624999 eval return -10.62 +/- 0.0
+time:  64.164 SPS: 163
+629999 success 0.0 +/- 0.0
+629999 eval steps mean 99.9 best 99 optimal 7
+629999 eval return -10.662 +/- 0.014
+time:  64.692 SPS: 163
+634999 success 0.0 +/- 0.0
+634999 eval steps mean 99.9 best 99 optimal 7
+634999 eval return -10.622 +/- 0.002
+640000
+GOAL [ 5 11]
+time:  65.239 SPS: 163
+639999 success 0.0 +/- 0.0
+639999 eval steps mean 99.9 best 99 optimal 6
+639999 eval return -13.562 +/- 0.002
+time:  65.78 SPS: 163
+644999 success 0.0 +/- 0.0
+644999 eval steps mean 99.9 best 99 optimal 6
+644999 eval return -13.56 +/- 0.0
+time:  66.32 SPS: 163
+649999 success 0.0 +/- 0.0
+649999 eval steps mean 99.9 best 99 optimal 6
+649999 eval return -13.56 +/- 0.0
+time:  66.848 SPS: 163
+654999 success 0.0 +/- 0.0
+654999 eval steps mean 99.9 best 99 optimal 6
+654999 eval return -13.56 +/- 0.0
+time:  67.382 SPS: 163
+659999 success 0.0 +/- 0.0
+659999 eval steps mean 99.9 best 99 optimal 6
+659999 eval return -13.56 +/- 0.0
+time:  67.872 SPS: 163
+664999 success 0.0 +/- 0.0
+664999 eval steps mean 99.9 best 99 optimal 6
+664999 eval return -11.02 +/- 0.0
+time:  68.344 SPS: 163
+669999 success 0.0 +/- 0.0
+669999 eval steps mean 99.9 best 99 optimal 6
+669999 eval return -11.02 +/- 0.0
+time:  68.823 SPS: 163
+674999 success 0.0 +/- 0.0
+674999 eval steps mean 99.9 best 99 optimal 6
+674999 eval return -11.02 +/- 0.0
+680000
+GOAL [14  5]
+time:  69.303 SPS: 163
+679999 success 0.0 +/- 0.0
+679999 eval steps mean 99.9 best 99 optimal 9
+679999 eval return -15.72 +/- 0.0
+time:  69.783 SPS: 163
+684999 success 0.0 +/- 0.0
+684999 eval steps mean 99.9 best 99 optimal 9
+684999 eval return -15.72 +/- 0.0
+time:  70.26 SPS: 163
+689999 success 0.0 +/- 0.0
+689999 eval steps mean 99.9 best 99 optimal 9
+689999 eval return -15.72 +/- 0.0
+time:  70.74 SPS: 163
+694999 success 0.0 +/- 0.0
+694999 eval steps mean 99.9 best 99 optimal 9
+694999 eval return -15.72 +/- 0.0
+time:  71.217 SPS: 163
+699999 success 0.0 +/- 0.0
+699999 eval steps mean 99.9 best 99 optimal 9
+699999 eval return -15.72 +/- 0.0
+time:  71.692 SPS: 163
+704999 success 0.0 +/- 0.0
+704999 eval steps mean 99.9 best 99 optimal 9
+704999 eval return -15.72 +/- 0.0
+time:  72.166 SPS: 163
+709999 success 0.0 +/- 0.0
+709999 eval steps mean 99.9 best 99 optimal 9
+709999 eval return -15.72 +/- 0.0
+time:  72.641 SPS: 164
+714999 success 0.0 +/- 0.0
+714999 eval steps mean 99.9 best 99 optimal 9
+714999 eval return -15.72 +/- 0.0
+720000
+GOAL [13  0]
+time:  73.12 SPS: 164
+719999 success 0.0 +/- 0.0
+719999 eval steps mean 99.9 best 99 optimal 13
+719999 eval return -19.72 +/- 0.0
+time:  73.597 SPS: 164
+724999 success 0.0 +/- 0.0
+724999 eval steps mean 99.9 best 99 optimal 13
+724999 eval return -19.72 +/- 0.0
+time:  74.074 SPS: 164
+729999 success 0.0 +/- 0.0
+729999 eval steps mean 99.9 best 99 optimal 13
+729999 eval return -19.72 +/- 0.0
+time:  74.553 SPS: 164
+734999 success 0.0 +/- 0.0
+734999 eval steps mean 99.9 best 99 optimal 13
+734999 eval return -19.72 +/- 0.0
+time:  75.025 SPS: 164
+739999 success 0.0 +/- 0.0
+739999 eval steps mean 99.9 best 99 optimal 13
+739999 eval return -19.72 +/- 0.0
+time:  75.498 SPS: 164
+744999 success 0.0 +/- 0.0
+744999 eval steps mean 99.9 best 99 optimal 13
+744999 eval return -19.72 +/- 0.0
+time:  75.976 SPS: 164
+749999 success 0.0 +/- 0.0
+749999 eval steps mean 99.9 best 99 optimal 13
+749999 eval return -19.72 +/- 0.0
+time:  76.464 SPS: 164
+754999 success 0.0 +/- 0.0
+754999 eval steps mean 99.9 best 99 optimal 13
+754999 eval return -8.67 +/- 0.016
+760000
+GOAL [ 8 10]
+time:  77.007 SPS: 164
+759999 success 0.0 +/- 0.0
+759999 eval steps mean 99.9 best 99 optimal 4
+759999 eval return -11.62 +/- 0.0
+time:  77.54 SPS: 164
+764999 success 0.0 +/- 0.0
+764999 eval steps mean 99.9 best 99 optimal 4
+764999 eval return -11.632 +/- 0.01
+time:  78.075 SPS: 164
+769999 success 0.0 +/- 0.0
+769999 eval steps mean 99.9 best 99 optimal 4
+769999 eval return -11.62 +/- 0.0
+time:  78.6 SPS: 164
+774999 success 0.0 +/- 0.0
+774999 eval steps mean 99.9 best 99 optimal 4
+774999 eval return -11.62 +/- 0.0
+time:  79.103 SPS: 164
+779999 success 0.0 +/- 0.0
+779999 eval steps mean 99.9 best 99 optimal 4
+779999 eval return -11.622 +/- 0.002
+time:  79.61 SPS: 164
+784999 success 0.0 +/- 0.0
+784999 eval steps mean 99.9 best 99 optimal 4
+784999 eval return -11.62 +/- 0.0
+time:  80.109 SPS: 164
+789999 success 0.0 +/- 0.0
+789999 eval steps mean 99.9 best 99 optimal 4
+789999 eval return -11.624 +/- 0.003
+time:  80.575 SPS: 164
+794999 success 0.0 +/- 0.0
+794999 eval steps mean 99.9 best 99 optimal 4
+794999 eval return -11.62 +/- 0.0
+800000
+GOAL [12 14]
+time:  81.046 SPS: 164
+799999 success 0.0 +/- 0.0
+799999 eval steps mean 99.9 best 99 optimal 12
+799999 eval return -7.62 +/- 0.0
+done RL run. Time 81.18727189166627 min

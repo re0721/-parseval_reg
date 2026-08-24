@@ -1,0 +1,21 @@
+  -> base lr=0.0003 seed_idx=0
+  -> base lr=0.0003 seed_idx=1
+  -> base lr=0.0003 seed_idx=2
+  -> base lr=0.0003 seed_idx=3
+  -> base lr=0.0003 seed_idx=4
+  -> base lr=0.0003 seed_idx=5
+  -> parseval lr=0.0003 seed_idx=0
+  -> parseval lr=0.0003 seed_idx=1
+  -> parseval lr=0.0003 seed_idx=2
+  -> parseval lr=0.0003 seed_idx=3
+  -> parseval lr=0.0003 seed_idx=4
+  -> parseval lr=0.0003 seed_idx=5
+  -> pion lr=0.002 seed_idx=0
+  -> pion lr=0.002 seed_idx=1
+  -> pion lr=0.002 seed_idx=2
+  -> pion lr=0.002 seed_idx=3
+  -> pion lr=0.002 seed_idx=4
+  -> pion lr=0.002 seed_idx=5
+
+已启动 18 个进程（1000 万步 / 10 任务，预计 5-7 小时）
+=== MetaWorld 10 任务（base/parseval/pion）跑完 ===
