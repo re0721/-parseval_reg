@@ -22,7 +22,7 @@ import geoopt
 from geoopt.manifolds import Stiefel
 from geoopt.tensor import ManifoldParameter
 
-from pion_optimizer import Pion
+from pion_optimizer import Pion, PionMinimal
 from poet_official import PoetOfficialLinear
 
 
@@ -48,7 +48,7 @@ class PPO_Agent:
                  input_scale=1, learnable_input_scale=False, lie_group=False, pion=False,
                  pion_block_size=None, oft=False, poet=False, oet_num_blocks=1,
                  poet_exact_cayley=False,
-                 pion_multiplicative=False,
+                 pion_multiplicative=False, pion_minimal=False, pion_minimal_rms=False,
                  seed=None, *args, **kwargs):
 
         self.env = env
@@ -82,6 +82,8 @@ class PPO_Agent:
         self.pion = pion
         self.pion_block_size = pion_block_size
         self.pion_multiplicative = pion_multiplicative
+        self.pion_minimal = pion_minimal
+        self.pion_minimal_rms = pion_minimal_rms
         self.oft = oft
         self.poet = poet
         self.oet_num_blocks = oet_num_blocks
@@ -148,6 +150,12 @@ class PPO_Agent:
                                       betas=(0.9, 0.95), multiplicative=True)
             else:
                 self.optimizer = Pion(self.agent_networks.parameters(), lr=self.learning_rate)
+        elif self.pion_minimal:
+            # Minimal Pion: orthogonal-transformation core only (no momentum/RMS/additive).
+            self.optimizer = PionMinimal(self.agent_networks.parameters(), lr=self.learning_rate)
+        elif self.pion_minimal_rms:
+            # Minimal Pion + RMS scaling (still no momentum, multiplicative).
+            self.optimizer = PionMinimal(self.agent_networks.parameters(), lr=self.learning_rate, rms_scaling=True)
         elif self.lie_group:
             # StiefelLinear uses ManifoldParameter -> RiemannianAdam.
             self.optimizer = geoopt.optim.RiemannianAdam(self.agent_networks.parameters(), lr=self.learning_rate, eps=1e-5)
@@ -712,6 +720,38 @@ def ones_layer_init(layer, gain=1.0, bias_const=0.0):
     return layer
 
 
+def standard_layer_init(layer, gain=None, std=0.1, bias_const=0.0):
+    """Fixed-variance zero-mean Gaussian init (Hinton & Salakhutdinov 2006, N(0, 0.01)).
+
+    Unlike xavier (variance scaled by layer dims), this uses a FIXED variance
+    0.01 (std = sqrt(0.01) = 0.1) for every layer, so the spectrum scale is
+    layer-independent. The spectrum is shaped but the scale does not depend on
+    layer width.
+    """
+    if gain is not None:
+        std = std * gain
+    torch.nn.init.normal_(layer.weight, mean=0.0, std=std)
+    if layer.bias is not None:
+        torch.nn.init.constant_(layer.bias, bias_const)
+    return layer
+
+
+def identity_layer_init(layer, gain=None, bias_const=0.0):
+    """Identity init: W = I (orthogonal, all singular values = 1).
+
+    For non-square matrices, torch.nn.init.eye_ fills the min(d_in, d_out)
+    leading diagonal with 1 and leaves the rest 0, so the matrix is a partial
+    isometry (all nonzero singular values = 1). If `gain` is given, W = gain * I.
+    """
+    torch.nn.init.eye_(layer.weight)
+    if gain is not None:
+        with torch.no_grad():
+            layer.weight.mul_(gain)
+    if layer.bias is not None:
+        torch.nn.init.constant_(layer.bias, bias_const)
+    return layer
+
+
 class AgentNetworks(nn.Module):
     def __init__(self, env, network_type, weight_init='orthogonal', init_gain=None,
                  layer_norm=False, layer_norm_no_params=False, tsallis_ent_coef=None, rpo_alpha=0,
@@ -834,6 +874,10 @@ class AgentNetworks(nn.Module):
             layer_init = orthogonal_layer_init
         elif weight_init == 'xavier':
             layer_init = xavier_layer_init
+        elif weight_init == 'standard':
+            layer_init = standard_layer_init
+        elif weight_init == 'identity':
+            layer_init = identity_layer_init
         elif weight_init == 'ones':
             layer_init = ones_layer_init
         else:
@@ -845,7 +889,9 @@ class AgentNetworks(nn.Module):
             if lie_group:
                 return StiefelLinear(in_features, out_features, bias=True)
             if poet:
-                return PoetOfficialLinear(in_features, out_features, bias=True, exact_cayley=poet_exact_cayley)
+                # full orthogonal R (block_size = full dim), not block-diagonal
+                return PoetOfficialLinear(in_features, out_features, bias=True, exact_cayley=poet_exact_cayley,
+                                          weight_init=weight_init, block_size_in=in_features, block_size_out=out_features)
             if oft:
                 return OETLinear(in_features, out_features, two_sided=False, bias=True, num_blocks=oet_num_blocks)
             return layer_init(nn.Linear(in_features, out_features), gain=init_gain)

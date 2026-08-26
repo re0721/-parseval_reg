@@ -108,3 +108,72 @@ class Pion(Optimizer):
                         p.copy_(W + W @ exp_in + exp_out @ W)
 
         return loss
+
+
+class PionMinimal(Optimizer):
+    """Minimal Pion: keep ONLY the orthogonal-transformation core.
+
+    Removed vs the full Pion: first/second-order momentum, bias correction,
+    RMS scaling (Consistent Update), and the additive variant. Kept: the
+    Lie-algebra construction and the second-order truncated exponential, in
+    the multiplicative form (paper Algorithm 1).
+
+    Update:
+        Gin = W^T G - G^T W,  Gout = G W^T - W G^T
+        E_in  = I - lr*Gin  + 0.5*(lr*Gin)^2
+        E_out = I - lr*Gout + 0.5*(lr*Gout)^2
+        W <- E_out @ W @ E_in
+    """
+    def __init__(self, params, lr=1e-4, betas=(0.9, 0.999), eps=1e-8, rms_scaling=False, rms_constant=0.2):
+        defaults = dict(lr=lr, betas=betas, eps=eps, rms_scaling=rms_scaling, rms_constant=rms_constant)
+        super().__init__(params, defaults)
+
+    @torch.no_grad()
+    def step(self, closure=None):
+        loss = None
+        if closure is not None:
+            with torch.enable_grad():
+                loss = closure()
+        for group in self.param_groups:
+            lr = group["lr"]
+            beta1, beta2 = group["betas"]
+            eps = group["eps"]
+            for p in group["params"]:
+                if p.grad is None:
+                    continue
+                G = p.grad
+                if G.dim() < 2 or min(p.shape) <= 8:
+                    # 1-D params / output layer: Adam (same as standard Pion)
+                    state = self.state[p]
+                    if len(state) == 0:
+                        state["step"] = 0
+                        state["m"] = torch.zeros_like(p)
+                        state["v"] = torch.zeros_like(p)
+                    state["step"] += 1
+                    m, v = state["m"], state["v"]
+                    m.mul_(beta1).add_(G, alpha=1 - beta1)
+                    v.mul_(beta2).addcmul_(G, G, value=1 - beta2)
+                    m_hat = m / (1 - beta1 ** state["step"])
+                    v_hat = v / (1 - beta2 ** state["step"])
+                    p.add_(m_hat / (v_hat.sqrt() + eps), alpha=-lr)
+                else:
+                    W = p
+                    dout, din = W.shape
+                    Gin = W.t() @ G - G.t() @ W
+                    Gout = G @ W.t() - W @ G.t()
+                    A_in = -Gin
+                    A_out = -Gout
+                    if group["rms_scaling"]:
+                        # RMS-controlled scale consistency (no momentum): normalize
+                        # rotation magnitude across layers of different sizes.
+                        c = group["rms_constant"]
+                        denom = torch.norm(A_out @ W + W @ A_in) + eps
+                        eta = lr * c * math.sqrt(dout * din) / denom
+                    else:
+                        eta = lr
+                    I_in = torch.eye(din, device=W.device, dtype=W.dtype)
+                    I_out = torch.eye(dout, device=W.device, dtype=W.dtype)
+                    E_in = I_in + eta * A_in + 0.5 * (eta * A_in) @ (eta * A_in)
+                    E_out = I_out + eta * A_out + 0.5 * (eta * A_out) @ (eta * A_out)
+                    p.copy_(E_out @ W @ E_in)
+        return loss

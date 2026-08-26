@@ -60,7 +60,7 @@ class ConfigDictConverter:
                                  'clip_coef', 'clip_vloss', 'ent_coef', 'vf_coef', 'max_grad_norm', 'target_kl',
                                  'weight_decay', 'adam_eps', 'adam_beta2', 'tuned_adam',
                                  'layer_norm', 'layer_norm_no_params',
-                                 'parseval_reg', 'parseval_norm', 'parseval_num_groups', 'rpo_alpha', 'regen', 'regen_wasserstein', 'input_scale', 'learnable_input_scale', 'add_diag_layer', 'network_type', 'lie_group', 'pion', 'pion_block_size', 'pion_multiplicative', 'oft', 'poet', 'oet_num_blocks', 'poet_exact_cayley',
+                                 'parseval_reg', 'parseval_norm', 'parseval_num_groups', 'rpo_alpha', 'regen', 'regen_wasserstein', 'input_scale', 'learnable_input_scale', 'add_diag_layer', 'network_type', 'lie_group', 'pion', 'pion_block_size', 'pion_multiplicative', 'pion_minimal', 'pion_minimal_rms', 'oft', 'poet', 'oet_num_blocks', 'poet_exact_cayley',
                                  'tsallis_entropy', 'l2_init', 'group_sort', 'weight_init', 'init_gain',
                                  'perturb', 'perturb_dist',
                                  'net_width', 'net_activation']
@@ -297,6 +297,8 @@ def main():
     parser.add_argument('--pion', type=bool, default=False, help='Use Pion spectrum-preserving optimizer for 2D weights')
     parser.add_argument('--pion_block_size', type=int, default=None, help='Block-diagonal size for Pion in-side update (None = full)')
     parser.add_argument('--pion_multiplicative', type=bool, default=False, help='Use multiplicative Pion variant (paper Algorithm 1)')
+    parser.add_argument('--pion_minimal', type=bool, default=False, help='Use minimal Pion (no momentum/RMS, second-order multiplicative)')
+    parser.add_argument('--pion_minimal_rms', type=bool, default=False, help='Use minimal Pion + RMS scaling (no momentum, multiplicative)')
     parser.add_argument('--oft', type=bool, default=False, help='Use OFT (Orthogonal Finetuning, W=W0@R)')
     parser.add_argument('--poet', type=bool, default=False, help='Use POET (W=P@W0@R)')
     parser.add_argument('--oet_num_blocks', type=int, default=1, help='Block-diagonal blocks for OFT/POET input-side R')
@@ -364,6 +366,16 @@ def main():
             args.pion = True
             args.pion_multiplicative = True
             if args.weight_init is None:  # not user-specified; use Gaussian
+                args.weight_init = 'xavier'
+
+        elif args.algorithm == 'pion_minimal':  # Minimal Pion (orthogonal core only)
+            args.pion_minimal = True
+            if args.weight_init is None:
+                args.weight_init = 'xavier'
+
+        elif args.algorithm == 'pion_minimal_rms':  # Minimal Pion + RMS scaling
+            args.pion_minimal_rms = True
+            if args.weight_init is None:
                 args.weight_init = 'xavier'
 
         elif args.algorithm == 'oft':  # Orthogonal Finetuning (W = W0 @ R)
@@ -453,6 +465,7 @@ def main():
         if args.num_steps == 10000:  # 10000 is the argparse default -> not user-specified, use paper default
             args.num_steps = 1e7
         args.change_freq = 1e6
+        args.rpo_alpha = 0.0  # 用 PPO（老师要求，不用 RPO）
 
         if args.algorithm == 'base':
             ...
@@ -469,6 +482,16 @@ def main():
             args.pion = True
             args.pion_multiplicative = True
             if args.weight_init is None:  # not user-specified; use Gaussian
+                args.weight_init = 'xavier'
+
+        elif args.algorithm == 'pion_minimal':  # Minimal Pion (orthogonal core only)
+            args.pion_minimal = True
+            if args.weight_init is None:
+                args.weight_init = 'xavier'
+
+        elif args.algorithm == 'pion_minimal_rms':  # Minimal Pion + RMS scaling
+            args.pion_minimal_rms = True
+            if args.weight_init is None:
                 args.weight_init = 'xavier'
 
         elif args.algorithm == 'oft':  # Orthogonal Finetuning (W = W0 @ R)

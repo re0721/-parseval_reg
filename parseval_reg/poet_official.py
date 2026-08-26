@@ -17,6 +17,8 @@ deviation). The merge-then-reinitialize step is omitted here (W_0 is frozen
 Gaussian, and Q stays small in this setting).
 """
 
+import math
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -69,9 +71,10 @@ def _auto_block_size(n, max_bs=32):
 
 class PoetOfficialLinear(nn.Module):
     def __init__(self, in_features, out_features, block_size_in=None, block_size_out=None, bias=True,
-                 exact_cayley=False):
+                 exact_cayley=False, weight_init='xavier'):
         super().__init__()
         self.exact_cayley = exact_cayley
+        self.weight_init = weight_init
         self._R_cache = None   # (param_versions, R_out, R_in)，见 _get_R
         self._W_cache = None   # (param_versions, W_eff, b_eff)，见 _effective_weight
         block_size_in = block_size_in or _auto_block_size(in_features)
@@ -85,9 +88,18 @@ class PoetOfficialLinear(nn.Module):
         self.num_in_blocks = in_features // block_size_in
         self.num_out_blocks = out_features // block_size_out
 
-        # frozen base weight (Gaussian init)
+        # frozen base weight (its spectrum is the "initial spectrum" POET preserves)
         self.weight = nn.Parameter(torch.empty(out_features, in_features), requires_grad=False)
-        torch.nn.init.xavier_normal_(self.weight, gain=1.0)
+        if weight_init == 'xavier':
+            torch.nn.init.xavier_normal_(self.weight, gain=1.0)
+        elif weight_init == 'orthogonal':
+            torch.nn.init.orthogonal_(self.weight, gain=math.sqrt(2.0))
+        elif weight_init == 'standard':
+            torch.nn.init.normal_(self.weight, mean=0.0, std=0.1)
+        elif weight_init == 'identity':
+            torch.nn.init.eye_(self.weight)
+        else:
+            torch.nn.init.xavier_normal_(self.weight, gain=1.0)
         if bias:
             self.bias = nn.Parameter(torch.zeros(out_features))
         else:
@@ -106,9 +118,9 @@ class PoetOfficialLinear(nn.Module):
         self.register_buffer("rows_out", rows_out)
         self.register_buffer("cols_out", cols_out)
 
-        # random permutations (SPO)
-        perm_in = torch.randperm(in_features)
-        perm_out = torch.randperm(out_features)
+        # identity permutation (no SPO — pure orthogonal transform W = R_out^T W0 R_in^T)
+        perm_in = torch.arange(in_features)
+        perm_out = torch.arange(out_features)
         self.register_buffer("perm_in", perm_in)
         self.register_buffer("perm_out", perm_out)
 
