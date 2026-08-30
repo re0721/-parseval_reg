@@ -118,9 +118,9 @@ class PoetOfficialLinear(nn.Module):
         self.register_buffer("rows_out", rows_out)
         self.register_buffer("cols_out", cols_out)
 
-        # identity permutation (no SPO — pure orthogonal transform W = R_out^T W0 R_in^T)
-        perm_in = torch.arange(in_features)
-        perm_out = torch.arange(out_features)
+        # random permutations (SPO)
+        perm_in = torch.randperm(in_features)
+        perm_out = torch.randperm(out_features)
         self.register_buffer("perm_in", perm_in)
         self.register_buffer("perm_out", perm_out)
 

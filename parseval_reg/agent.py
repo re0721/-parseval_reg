@@ -44,6 +44,8 @@ class PPO_Agent:
                  parseval_reg=0, parseval_norm=False, parseval_last_layer=False, parseval_num_groups=1,
                  perturb=0.0, perturb_dist='xavier',
                  regen=0.0, regen_wasserstein=False,
+                 iso_reg=0.0, spectral_reg=0.0,
+                 l2_er_weight_decay=0.0, l2_er_beta=0.0,
                  rpo_alpha=0, net_width=64, net_activation='tanh', init_gain=None,
                  input_scale=1, learnable_input_scale=False, lie_group=False, pion=False,
                  pion_block_size=None, oft=False, poet=False, oet_num_blocks=1,
@@ -93,6 +95,10 @@ class PPO_Agent:
         self.perturb_dist = perturb_dist  # either "xavier" or "orthogonal". The type of noise to add.
         self.regen = regen  # renegerative regularizer coefficient. l2-reg towards the initial parameters
         self.regen_wasserstein = regen_wasserstein
+        self.iso_reg = iso_reg  # dynamical-isometry (Gram-deviation) regularizer coefficient
+        self.spectral_reg = spectral_reg  # spectral-norm regularizer coefficient (sigma_max -> 1)
+        self.l2_er_weight_decay = l2_er_weight_decay  # L2-ER: L2 weight decay coefficient
+        self.l2_er_beta = l2_er_beta  # L2-ER: effective-rank penalty coefficient
 
         self.network_type = network_type
         self.add_diag_layer = add_diag_layer
@@ -358,6 +364,86 @@ class PPO_Agent:
                         self.agent_networks.critic.named_parameters())
 
                     #  (self.net_width / 64) This factor is used since the original parseval_reg was tuned for width 64
+                #####
+
+                ##### ISO (dynamical isometry / Gram-deviation) regularizer
+                if self.iso_reg > 0:
+                    def iso_reg_network(named_parameters):
+                        loss_iso = 0
+                        for name, param in named_parameters:
+                            if 'weight' in name and 'linear' in name and param.requires_grad:
+                                W = torch.atleast_2d(param)
+                                d_out, d_in = W.shape
+                                if d_out >= d_in:
+                                    gram = W.t() @ W
+                                    loss_iso = loss_iso + torch.norm(
+                                        gram - torch.eye(d_in, device=W.device, dtype=W.dtype), p='fro') ** 2
+                                else:
+                                    gram = W @ W.t()
+                                    loss_iso = loss_iso + torch.norm(
+                                        gram - torch.eye(d_out, device=W.device, dtype=W.dtype), p='fro') ** 2
+                        return loss_iso
+
+                    loss = loss + self.iso_reg * iso_reg_network(self.agent_networks.actor_mean.named_parameters())
+                    loss = loss + self.iso_reg * iso_reg_network(self.agent_networks.critic.named_parameters())
+                #####
+
+                ##### Spectral (spectral-norm -> 1) regularizer, k=2, power iteration
+                if self.spectral_reg > 0:
+                    def spectral_reg_network(named_parameters):
+                        loss_spec = 0
+                        for name, param in named_parameters:
+                            if 'weight' in name and 'linear' in name and param.requires_grad:
+                                W = torch.atleast_2d(param)
+                                # single power iteration to estimate sigma_max^2
+                                u = torch.randn(W.shape[1], device=W.device, dtype=W.dtype)
+                                u = u / torch.norm(u)
+                                sigma_max_sq = torch.norm(W.t() @ (W @ u))
+                                loss_spec = loss_spec + (sigma_max_sq - 1.0) ** 2
+                            elif 'bias' in name and param.requires_grad:
+                                loss_spec = loss_spec + torch.norm(param) ** 4  # ||b||_2^{2k}, k=2
+                        return loss_spec
+
+                    loss = loss + self.spectral_reg * spectral_reg_network(self.agent_networks.actor_mean.named_parameters())
+                    loss = loss + self.spectral_reg * spectral_reg_network(self.agent_networks.critic.named_parameters())
+                #####
+
+                ##### L2-ER (L2 weight decay + effective-rank penalty)
+                if self.l2_er_weight_decay > 0:
+                    loss_wd = 0
+                    for param in self.agent_networks.parameters():
+                        if param.requires_grad:
+                            loss_wd = loss_wd + torch.norm(param) ** 2
+                    loss = loss + self.l2_er_weight_decay * loss_wd
+
+                if self.l2_er_beta > 0:
+                    def erank(A):
+                        try:
+                            s = torch.linalg.svdvals(A)
+                        except torch._C._LinAlgError:
+                            # gesdd 对"太多重复奇异值"不收敛（ER 会把谱推向均匀）。
+                            # 加微小噪声打破对称后重试；噪声无梯度，梯度仍只流过 A。
+                            s = torch.linalg.svdvals(A + 1e-6 * torch.randn_like(A))
+                        s = torch.abs(s)
+                        total = s.sum().clamp_min(1e-8)
+                        p = s / total
+                        H = -(p * torch.log(p + 1e-12)).sum()
+                        return torch.exp(H)
+
+                    def hidden_activations(net, obs):
+                        x = obs
+                        acts = []
+                        for module in net:
+                            if isinstance(module, nn.Linear):
+                                acts.append(x)
+                            x = module(x)
+                        return acts[1:]
+
+                    loss_er = 0
+                    for net in (self.agent_networks.actor_mean, self.agent_networks.critic):
+                        for A in hidden_activations(net, b_obs[mb_inds]):
+                            loss_er = loss_er + erank(A)
+                    loss = loss - self.l2_er_beta * loss_er
                 #####
 
                 if self.regen > 0:  # add regenerative regularization
@@ -889,9 +975,8 @@ class AgentNetworks(nn.Module):
             if lie_group:
                 return StiefelLinear(in_features, out_features, bias=True)
             if poet:
-                # full orthogonal R (block_size = full dim), not block-diagonal
                 return PoetOfficialLinear(in_features, out_features, bias=True, exact_cayley=poet_exact_cayley,
-                                          weight_init=weight_init, block_size_in=in_features, block_size_out=out_features)
+                                          weight_init=weight_init)
             if oft:
                 return OETLinear(in_features, out_features, two_sided=False, bias=True, num_blocks=oet_num_blocks)
             return layer_init(nn.Linear(in_features, out_features), gain=init_gain)

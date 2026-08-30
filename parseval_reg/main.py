@@ -60,7 +60,7 @@ class ConfigDictConverter:
                                  'clip_coef', 'clip_vloss', 'ent_coef', 'vf_coef', 'max_grad_norm', 'target_kl',
                                  'weight_decay', 'adam_eps', 'adam_beta2', 'tuned_adam',
                                  'layer_norm', 'layer_norm_no_params',
-                                 'parseval_reg', 'parseval_norm', 'parseval_num_groups', 'rpo_alpha', 'regen', 'regen_wasserstein', 'input_scale', 'learnable_input_scale', 'add_diag_layer', 'network_type', 'lie_group', 'pion', 'pion_block_size', 'pion_multiplicative', 'pion_minimal', 'pion_minimal_rms', 'oft', 'poet', 'oet_num_blocks', 'poet_exact_cayley',
+                                 'parseval_reg', 'parseval_norm', 'parseval_num_groups', 'iso_reg', 'spectral_reg', 'l2_er_weight_decay', 'l2_er_beta', 'rpo_alpha', 'regen', 'regen_wasserstein', 'input_scale', 'learnable_input_scale', 'add_diag_layer', 'network_type', 'lie_group', 'pion', 'pion_block_size', 'pion_multiplicative', 'pion_minimal', 'pion_minimal_rms', 'oft', 'poet', 'oet_num_blocks', 'poet_exact_cayley',
                                  'tsallis_entropy', 'l2_init', 'group_sort', 'weight_init', 'init_gain',
                                  'perturb', 'perturb_dist',
                                  'net_width', 'net_activation']
@@ -288,6 +288,10 @@ def main():
 
     # Parseval regularization
     parser.add_argument('--parseval_reg', type=float, default=0, help='Parseval regularization coefficient')
+    parser.add_argument('--iso_reg', type=float, default=0.0, help='ISO (Gram-deviation) regularization coefficient')
+    parser.add_argument('--spectral_reg', type=float, default=0.0, help='Spectral (sigma_max->1) regularization coefficient')
+    parser.add_argument('--l2_er_weight_decay', type=float, default=0.0, help='L2-ER: L2 weight decay coefficient')
+    parser.add_argument('--l2_er_beta', type=float, default=0.0, help='L2-ER: effective-rank penalty coefficient')
 
     # Adding additional learnable parameters
     parser.add_argument('--input_scale', type=float, default=1, help='Input scaling factor')
