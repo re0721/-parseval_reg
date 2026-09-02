@@ -173,9 +173,13 @@ class PPO_Agent:
                 self.optimizer = optim.Adam(self.agent_networks.parameters(), lr=self.learning_rate,
                                             betas=(0.9, 0.9), eps=1e-3)
         else:
-            if weight_decay > 0:
+            # Decoupled weight decay (AdamW): combine the base weight_decay with L2-ER's.
+            # Official L2-ER applies weight decay in the optimizer (optax.add_decayed_weights),
+            # NOT as an L2 term in the loss.
+            wd = weight_decay + l2_er_weight_decay
+            if wd > 0:
                 self.optimizer = optim.AdamW(self.agent_networks.parameters(), lr=self.learning_rate,
-                                             eps=1e-5, weight_decay=weight_decay)
+                                             eps=1e-5, weight_decay=wd)
             else:
                 self.optimizer = optim.Adam(self.agent_networks.parameters(), lr=self.learning_rate, eps=1e-5)
 
@@ -408,43 +412,7 @@ class PPO_Agent:
                     loss = loss + self.spectral_reg * spectral_reg_network(self.agent_networks.critic.named_parameters())
                 #####
 
-                ##### L2-ER (L2 weight decay + effective-rank penalty)
-                if self.l2_er_weight_decay > 0:
-                    loss_wd = 0
-                    for param in self.agent_networks.parameters():
-                        if param.requires_grad:
-                            loss_wd = loss_wd + torch.norm(param) ** 2
-                    loss = loss + self.l2_er_weight_decay * loss_wd
-
-                if self.l2_er_beta > 0:
-                    def erank(A):
-                        try:
-                            s = torch.linalg.svdvals(A)
-                        except torch._C._LinAlgError:
-                            # gesdd 对"太多重复奇异值"不收敛（ER 会把谱推向均匀）。
-                            # 加微小噪声打破对称后重试；噪声无梯度，梯度仍只流过 A。
-                            s = torch.linalg.svdvals(A + 1e-6 * torch.randn_like(A))
-                        s = torch.abs(s)
-                        total = s.sum().clamp_min(1e-8)
-                        p = s / total
-                        H = -(p * torch.log(p + 1e-12)).sum()
-                        return torch.exp(H)
-
-                    def hidden_activations(net, obs):
-                        x = obs
-                        acts = []
-                        for module in net:
-                            if isinstance(module, nn.Linear):
-                                acts.append(x)
-                            x = module(x)
-                        return acts[1:]
-
-                    loss_er = 0
-                    for net in (self.agent_networks.actor_mean, self.agent_networks.critic):
-                        for A in hidden_activations(net, b_obs[mb_inds]):
-                            loss_er = loss_er + erank(A)
-                    loss = loss - self.l2_er_beta * loss_er
-                #####
+                ##### L2-ER: decoupled update applied after optimizer.step() below #####
 
                 if self.regen > 0:  # add regenerative regularization
                     loss_regen = 0
@@ -485,6 +453,52 @@ class PPO_Agent:
                 loss.backward()
                 nn.utils.clip_grad_norm_(self.agent_networks.parameters(), self.max_grad_norm)
                 self.optimizer.step()
+
+                ##### L2-ER effective-rank: decoupled plain gradient ascent (matches official rlopt)
+                # Official L2-ER applies the effective-rank penalty as a SEPARATE gradient step
+                # theta += er_lr * grad(erank), decoupled from the Adam task update (like AdamW
+                # decouples weight decay). The L2 weight decay is likewise decoupled via AdamW above.
+                if self.l2_er_beta > 0:
+                    def erank(A):
+                        try:
+                            s = torch.linalg.svdvals(A)
+                        except torch._C._LinAlgError:
+                            # gesdd 对"太多重复奇异值"不收敛（ER 会把谱推向均匀）。
+                            # 加微小噪声打破对称后重试；噪声无梯度，梯度仍只流过 A。
+                            s = torch.linalg.svdvals(A + 1e-6 * torch.randn_like(A))
+                        s = torch.abs(s)
+                        total = s.sum().clamp_min(1e-8)
+                        p = s / total
+                        H = -(p * torch.log(p + 1e-12)).sum()
+                        return torch.exp(H)
+
+                    def hidden_activations(net, obs):
+                        x = obs
+                        acts = []
+                        for module in net:
+                            if isinstance(module, nn.Linear):
+                                acts.append(x)
+                            x = module(x)
+                        return acts[1:]
+
+                    loss_er = 0
+                    for net in (self.agent_networks.actor_mean, self.agent_networks.critic):
+                        for A in hidden_activations(net, b_obs[mb_inds]):
+                            loss_er = loss_er + erank(A)
+
+                    # Save the task grads (get_log_quantities() reads param.grad after the update).
+                    task_grads = {n: p.grad.clone() for n, p in self.agent_networks.named_parameters() if p.grad is not None}
+                    self.optimizer.zero_grad()
+                    loss_er.backward()
+                    with torch.no_grad():
+                        for param in self.agent_networks.parameters():
+                            if param.grad is not None:
+                                param.add_(self.l2_er_beta * param.grad)  # theta += beta * grad(erank)
+                    self.optimizer.zero_grad()
+                    for n, p in self.agent_networks.named_parameters():
+                        if n in task_grads:
+                            p.grad = task_grads[n]
+                #####
 
                 ### Add noise for shrink-and-perturb
                 # make a new model with same weights
@@ -822,6 +836,20 @@ def standard_layer_init(layer, gain=None, std=0.1, bias_const=0.0):
     return layer
 
 
+def lecun_layer_init(layer, gain=None, bias_const=0.0):
+    """LeCun uniform init: U(-sqrt(3/fan_in), sqrt(3/fan_in)), variance 1/fan_in.
+
+    This is the init used by the official L2-ER (Spectral Collapse) RL code
+    (rlopt/models.py, `jax.nn.initializers.lecun_uniform`). `gain` is ignored so
+    that EVERY layer (including the output head) gets plain LeCun uniform,
+    matching the paper's RL code exactly. Bias is set to a constant.
+    """
+    torch.nn.init.kaiming_uniform_(layer.weight, a=0, mode='fan_in', nonlinearity='linear')
+    if layer.bias is not None:
+        torch.nn.init.constant_(layer.bias, bias_const)
+    return layer
+
+
 def identity_layer_init(layer, gain=None, bias_const=0.0):
     """Identity init: W = I (orthogonal, all singular values = 1).
 
@@ -962,6 +990,8 @@ class AgentNetworks(nn.Module):
             layer_init = xavier_layer_init
         elif weight_init == 'standard':
             layer_init = standard_layer_init
+        elif weight_init == 'lecun':
+            layer_init = lecun_layer_init
         elif weight_init == 'identity':
             layer_init = identity_layer_init
         elif weight_init == 'ones':
