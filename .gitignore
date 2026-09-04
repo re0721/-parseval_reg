@@ -3,3 +3,6 @@ __pycache__/
 results/
 results_archive/
 logs/
+wandb/
+MUJOCO_LOG.TXT
+suspended_iso_pids.txt

@@ -267,6 +267,7 @@ def main():
     parser.add_argument('--save_path', type=str, default='results/', help='Path to the folder to be saved in')
     parser.add_argument('--save_freq', type=int, default=25000, help='Number steps between recording metrics')
     parser.add_argument('--save_model_freq', type=int, default=-1, help='Number of steps between saving the model. Set to -1 for never. ')
+
     
 
     # Arguments for PPO/RPO
@@ -308,6 +309,8 @@ def main():
     parser.add_argument('--oet_num_blocks', type=int, default=1, help='Block-diagonal blocks for OFT/POET input-side R')
     parser.add_argument('--poet_exact_cayley', type=bool, default=False, help='POET: use exact-inverse Cayley instead of the 4th-order Neumann truncation')
     parser.add_argument('--save_suffix', type=str, default='', help='Extra suffix on save_tag, to keep sweep configs from overwriting each other')
+    parser.add_argument('--wandb', action='store_true', help='Log metrics to Weights & Biases (offline mode by default)')
+    parser.add_argument('--wandb_online', action='store_true', help='Use online W&B syncing (requires wandb login)')
 
     # Other loss of plasticity methods
     parser.add_argument('--layer_norm', type=bool, default=False, help='Use layer normalization')
@@ -543,6 +546,10 @@ def main():
         save_tag += f"_groups{args.parseval_num_groups}"
     if getattr(args, 'save_suffix', ''):
         save_tag += f"_{args.save_suffix}"
+    if args.wandb:
+        import wandb
+        wandb.init(project="parseval-reg", name=save_tag, config=vars(args),
+                   mode="online" if args.wandb_online else "offline")
     config_obj = ConfigDictConverter(vars(args))
     agent_parameters = config_obj.agent_dict
     env_parameters = config_obj.env_dict
@@ -686,6 +693,12 @@ def main():
             print(f"{i_step} eval return {round(save_metrics['mean_eval_return'],3)} +/- {round(save_metrics['std_eval_return']/np.sqrt(num_eval_runs),3)}")
             metric_logger.save_metrics('eval', **save_metrics)
 
+            if args.wandb:
+                log = {'step': i_step, 'eval_return': save_metrics['mean_eval_return']}
+                if 'mean_eval_success' in save_metrics:
+                    log['success_rate'] = save_metrics['mean_eval_success']
+                wandb.log(log)
+
         # periodic checkpoint so a long run can be recovered if interrupted
         if (i_step + 1) % 50000 == 0:
             metric_logger.save_to_file(save_path, save_tag=save_tag)
@@ -700,7 +713,7 @@ def main():
                                                 # **extra_log,
                                                 save_path=save_path,
                                                 save_tag=save_tag)
-                if agent_parameters['algorithm'] == 'ppo_agent':  # save states for checking later
+                if agent_parameters['base_algorithm'] == 'ppo_agent':  # save states for checking later
                     metric_logger.save_metrics(option='states', agent=agent,
                                                     total_num_steps=(i_step+1),
                                                     states=agent.obs.clone().detach(),
@@ -717,6 +730,9 @@ def main():
 
 
     print('done RL run. Time {} min'.format((time.perf_counter() - start_time)/60))
+
+    if args.wandb:
+        wandb.finish()
 
     sys.stdout.flush()
     sys.stderr.flush()
